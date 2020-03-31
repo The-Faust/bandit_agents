@@ -5,7 +5,4 @@ class PredictionFormulas:
 
     @staticmethod
     def mean(last_prediction: float, target: float, step: int) -> float:
-        return PredictionFormulas.step_size(
-            last_prediction=last_prediction,
-            target=target,
-            step_size=1/(step - 1))
+        return PredictionFormulas.step_size(last_prediction, target, 1 / (step - 1))

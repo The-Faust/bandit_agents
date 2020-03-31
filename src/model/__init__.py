@@ -3,13 +3,18 @@ from numpy import zeros, full
 from src.model.functions import action_decision_functions
 
 
+# TODO: find a way so that epsilon, confidence and step_size
+#  are not stored in the object directly since they are not always needed
+#  (they depend on the decision function employed by the peson using the model)
 class BaseBandit:
     def __init__(
             self, n_of_actions: int,
-            optimistic_value=0, step_size=0.01,
+            optimistic_value=0, step_size=0.01, epsilon=0.01, confidence=0.01,
             prediction_type='step_size', decision_type='e_greedy'
     ) -> None:
         self._step_size = step_size
+        self._epsilon = epsilon
+        self._confidence = confidence
         self._actions_speculated_rewards = full(n_of_actions, optimistic_value)
         self._actions_counts = zeros(n_of_actions)
         self._prediction_type = prediction_type

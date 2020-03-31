@@ -1,4 +1,4 @@
-from numpy import array, argmax
+from numpy import argmax
 from random import uniform, randint
 
 
@@ -17,7 +17,4 @@ class EGreedy:
 
     @staticmethod
     def make_decision(epsilon: float, speculated_reward_array: [float]):
-        return EGreedy._e_greedy_chose_action(
-            speculated_rewards_array=speculated_reward_array,
-            is_greedy=EGreedy._is_greedy(epsilon=epsilon)
-        )
+        return EGreedy._e_greedy_chose_action(speculated_reward_array, EGreedy._is_greedy(epsilon))

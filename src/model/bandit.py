@@ -13,8 +13,9 @@ class Bandit(BaseBandit):
             prediction_type, decision_type
         )
 
-    def predict(self) -> (int, float):
-        action_index = self._action_decision_functions.decision_formulas.greedy(
+    def predict(self, prediction_type='step_size') -> (int, float):
+
+        action_index = self._action_decision_functions.decision_formulas.__dict__[prediction_type](
             speculated_reward_array=self._actions_speculated_rewards
         )
         return action_index, self._actions_speculated_rewards[action_index]
@@ -37,3 +38,9 @@ class Bandit(BaseBandit):
         return self._action_decision_functions.decision_formulas.__dict__[
             self._decision_type
         ].make_decision(self._actions_speculated_rewards)
+
+    def _get_decision_function_arguments(self, decision_type: str) -> tuple:
+        return {
+            'e_greedy': (self._epsilon, self._actions_speculated_rewards),
+            'ucb': (self._actions_speculated_rewards, self._actions_counts, self._confidence)
+        }[decision_type]
