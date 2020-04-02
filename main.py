@@ -1,9 +1,8 @@
-from src.model.bandit import Bandit
+from tests import session
 
 
 def main():
-    bandit = Bandit(n_of_actions=7, optimistic_value=5)
-    print(bandit.__dict__)
+    session()
 
 
 if __name__ == '__main__':

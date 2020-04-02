@@ -8,27 +8,19 @@ from src.model.functions import action_decision_functions
 #  (they depend on the decision function employed by the peson using the model)
 class BaseBandit:
     def __init__(
-            self, n_of_actions: int,
-            optimistic_value=0, step_size=0.01, epsilon=0.01, confidence=0.01,
-            prediction_type='step_size', decision_type='e_greedy'
+            self, actions_keys: [any],
+            optimistic_value=0, step_size=0.01, epsilon=0.01, confidence=0.01
     ) -> None:
         self._step_size = step_size
         self._epsilon = epsilon
         self._confidence = confidence
-        self._actions_speculated_rewards = full(n_of_actions, optimistic_value)
-        self._actions_counts = zeros(n_of_actions)
-        self._prediction_type = prediction_type
-        self._decision_type = decision_type
+        self._actions = actions_keys
+        self._actions_speculated_rewards = full(len(actions_keys), optimistic_value)
+        self._actions_counts = zeros(len(actions_keys))
         self._prediction_decision_functions = action_decision_functions
 
     def set_step_size(self, step_size_value: int) -> None:
         self._step_size = step_size_value
-
-    def set_prediction_type(self, prediction_type: str) -> None:
-        self._prediction_type = prediction_type
-
-    def set_decision_type(self, decision_type: str) -> None:
-        self._decision_type = decision_type
 
     def reset_action_count(self):
         self._actions_counts.fill(0)
