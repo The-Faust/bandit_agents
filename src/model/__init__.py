@@ -19,7 +19,7 @@ class BaseBandit:
         self._actions_counts = zeros(n_of_actions)
         self._prediction_type = prediction_type
         self._decision_type = decision_type
-        self._action_decision_functions = action_decision_functions
+        self._prediction_decision_functions = action_decision_functions
 
     def set_step_size(self, step_size_value: int) -> None:
         self._step_size = step_size_value
@@ -38,3 +38,8 @@ class BaseBandit:
 
     def reset_action_specualed_rewards(self):
         self._actions_speculated_rewards.fill(0)
+
+    def _increment_action_count(self, index: int):
+        self._actions_counts[index] += 1
+
+

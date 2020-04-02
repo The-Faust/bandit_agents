@@ -1,46 +1,74 @@
+from numpy import sum, count_nonzero, nditer
 from src.model import BaseBandit
 
 
 class Bandit(BaseBandit):
     def __init__(
             self, n_of_actions: [any],
-            optimistic_value=0, step_size=0.01,
+            optimistic_value=0, step_size=0.01, confidence=0.01,
             prediction_type='step_size', decision_type='e_greedy'
     ) -> None:
         BaseBandit.__init__(
             self, n_of_actions,
-            optimistic_value, step_size,
+            optimistic_value, step_size, confidence,
             prediction_type, decision_type
         )
 
-    def predict(self, prediction_type='step_size') -> (int, float):
+    def fit(self, predictions_types: [str], decisions_types: [str], actions_indexes: [int], target_list: [float]):
+        for i, j, k, l in nditer([predictions_types, decisions_types, actions_indexes, target_list]):
+            self.decide(i, j, k, l)
 
-        action_index = self._action_decision_functions.decision_formulas.__dict__[prediction_type](
-            speculated_reward_array=self._actions_speculated_rewards
+    def decide(self, prediction_type='step_size', decision_type='e_greedy', last_action_index=-1, target=0, ) -> int:
+        if count_nonzero(self._actions_counts):
+            self._update_speculated_rewards_array(
+                last_action_index=last_action_index,
+                target=target,
+                prediction_type=prediction_type
+            )
+
+        next_action_index = self._choose_action(decision_type=decision_type)
+        self._increment_action_count(next_action_index)
+        return next_action_index
+
+    def _update_speculated_rewards_array(self, last_action_index: int, target: float, prediction_type='step_size') -> [float]:
+        return self._prediction_decision_functions.prediction_formulas.__dict__[prediction_type](
+            *self._get_prediction_function_arguments(
+                prediction_type=prediction_type,
+                last_action_index=last_action_index,
+                target=target
+            )
         )
-        return action_index, self._actions_speculated_rewards[action_index]
 
-    def fit(self, reward, ):
-        pass
-
-    def _update_speculated_rewards_array(self, action_index: int, target: float, weight_type='mean') -> None:
-        self._actions_speculated_rewards[action_index] = self._action_decision_functions.prediction_formulas.__dict__[
-            weight_type
-        ](
-            self._actions_speculated_rewards[action_index],
-            target,
-            self._step_size
-            if weight_type == 'step_size'
-            else self._actions_counts[action_index]
+    def _choose_action(self, decision_type='e_greedy') -> int:
+        return self._prediction_decision_functions.decision_formulas.__dict__[decision_type](
+            *self._get_decision_function_arguments(decision_type=decision_type)
         )
 
-    def _choose_action(self) -> int:
-        return self._action_decision_functions.decision_formulas.__dict__[
-            self._decision_type
-        ].make_decision(self._actions_speculated_rewards)
+    def _get_prediction_function_arguments(self, prediction_type: str, last_action_index: int, target: float) -> tuple:
+        return {
+            'step_size': (
+                self._actions_speculated_rewards,
+                last_action_index,
+                target,
+                self._step_size
+            ),
+            'mean': (
+                self._actions_speculated_rewards,
+                last_action_index,
+                target,
+                self._actions_counts
+            )
+        }[prediction_type]
 
     def _get_decision_function_arguments(self, decision_type: str) -> tuple:
         return {
-            'e_greedy': (self._epsilon, self._actions_speculated_rewards),
-            'ucb': (self._actions_speculated_rewards, self._actions_counts, self._confidence)
+            'e_greedy': (
+                self._epsilon,
+                self._actions_speculated_rewards
+            ),
+            'ucb': (
+                self._actions_speculated_rewards,
+                self._actions_counts,
+                self._confidence
+            )
         }[decision_type]
