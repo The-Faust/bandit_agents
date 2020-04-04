@@ -12,7 +12,7 @@ class EGreedy:
         return argmax(
             speculated_rewards_array
         ) if is_greedy else randint(
-            0, len(speculated_rewards_array)
+            0, len(speculated_rewards_array) - 1
         )
 
     @staticmethod

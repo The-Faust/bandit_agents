@@ -5,7 +5,7 @@ from numpy import argmax, nditer, sum, array
 class UCB:
     @staticmethod
     def _get_upper_bound(speculated_reward, action_count, total_actions_count, confidence):
-        return speculated_reward + confidence * sqrt(log(total_actions_count) / action_count)
+        return speculated_reward + confidence * (sqrt(log(total_actions_count) / action_count) if action_count > 0 else 1)
 
     @staticmethod
     def _get_upper_bounds(speculated_reward_array: [float], action_counts: [int], confidence: float):

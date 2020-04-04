@@ -1,5 +1,5 @@
-from src.model.bandit import Bandit
-from random import randint, uniform
+from src import Bandit
+from random import uniform
 from numpy import array
 
 
@@ -7,8 +7,12 @@ def armed_bandit_benchmark_function():
     return uniform(0., 1.0)
 
 
+bench = [0.1, 0.8, 0.9, 1., 0.2, 0.9, 0.8, 0.9, 1., 0.2]
+
+
 def build_10_armed_bandit_benchmark():
     return array([armed_bandit_benchmark_function() for _ in range(10)])
+    # return bench
 
 
 def try_for_reward(i: int, ten_armed_bandit_benchmark: [float]) -> float:
@@ -19,8 +23,6 @@ def try_for_reward(i: int, ten_armed_bandit_benchmark: [float]) -> float:
 
 def run_model_for_reward(
         model: Bandit,
-        prediction_type: str,
-        decision_type: str,
         ten_armed_bandit_benchmark: [float],
         n_iter: int = 10000
 ):
@@ -29,8 +31,6 @@ def run_model_for_reward(
 
     for _ in range(n_iter):
         action_index, action = model.decide(
-            prediction_type=prediction_type,
-            decision_type=decision_type,
             last_action_index=action_index,
             target=reward
         )
@@ -47,15 +47,19 @@ def session():
 
     bandit = Bandit(
         actions_keys=[i for i in range(len(bandit_benchmark))],
-        optimistic_value=5,
-        step_size=0.1,
+        optimistic_value=5.,
+        step_size=0.5,
         confidence=0.1,
+        prediction_type='step_size',
+        decision_type='ucb'
     )
+    print(bandit_benchmark)
+    print(bandit)
 
     for ans in run_model_for_reward(
         model=bandit,
-        prediction_type='step_size',
-        decision_type='ucb',
         ten_armed_bandit_benchmark=bandit_benchmark
     ):
         print(ans)
+
+    print(bandit)
