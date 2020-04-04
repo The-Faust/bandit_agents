@@ -7,16 +7,12 @@ def armed_bandit_benchmark_function():
     return uniform(0., 1.0)
 
 
-bench = [0.1, 0.8, 0.9, 1., 0.2, 0.9, 0.8, 0.9, 1., 0.2]
-
-
 def build_10_armed_bandit_benchmark():
     return array([armed_bandit_benchmark_function() for _ in range(10)])
-    # return bench
 
 
-def try_for_reward(i: int, ten_armed_bandit_benchmark: [float]) -> float:
-    if uniform(0., 1.0) > ten_armed_bandit_benchmark[i]:
+def try_for_reward(index: int, ten_armed_bandit_benchmark: [float]) -> float:
+    if uniform(0., 1.0) > ten_armed_bandit_benchmark[index]:
         return 1
     return 0
 
@@ -35,7 +31,7 @@ def run_model_for_reward(
             target=reward
         )
         reward = try_for_reward(
-            i=action,
+            index=action,
             ten_armed_bandit_benchmark=ten_armed_bandit_benchmark
         )
 
@@ -53,13 +49,16 @@ def session():
         prediction_type='step_size',
         decision_type='ucb'
     )
-    print(bandit_benchmark)
+    other = bandit.__copy__()
     print(bandit)
+    print(other)
+    print(bandit == other)
+    print(bandit_benchmark)
 
     for ans in run_model_for_reward(
         model=bandit,
         ten_armed_bandit_benchmark=bandit_benchmark
     ):
-        print(ans)
+        continue
 
     print(bandit)

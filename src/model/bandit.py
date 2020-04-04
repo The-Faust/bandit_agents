@@ -50,3 +50,11 @@ class Bandit(BaseBandit, Arguments):
         return self._prediction_decision_functions.decision_formulas.__dict__[decision_type](
             *self._get_decision_function_arguments(decision_type=decision_type)
         )
+
+    def __eq__(self, other):
+        return isinstance(other, type(self)) and BaseBandit.__eq__(self, other)
+
+    def __copy__(self):
+        new_bandit = Bandit(actions_keys=self._actions)
+        new_bandit.__dict__ = self.__dict__
+        return new_bandit

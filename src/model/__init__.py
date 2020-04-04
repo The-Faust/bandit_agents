@@ -1,11 +1,11 @@
-from numpy import zeros, full
+from numpy import zeros, full, array
 
 from src.model.functions import action_decision_functions
 
 
 # TODO: find a way so that epsilon, confidence and step_size
 #  are not stored in the object directly since they are not always needed
-#  (they depend on the decision function employed by the peson using the model)
+#  (they depend on the decision function employed by the person using the model)
 class BaseBandit(object):
     def __init__(
             self, actions_keys: [any],
@@ -15,7 +15,7 @@ class BaseBandit(object):
         self._step_size = step_size
         self._epsilon = epsilon
         self._confidence = confidence
-        self._actions = actions_keys
+        self._actions = array(actions_keys)
         self._actions_speculated_rewards = full(len(actions_keys), optimistic_value)
         self._actions_counts = zeros(len(actions_keys))
         self._prediction_type = prediction_type
@@ -27,9 +27,6 @@ class BaseBandit(object):
 
     def reset_action_count(self):
         self._actions_counts.fill(0)
-
-    def set_action_speculated_rewards(self, rewards_value: float):
-        self._actions_speculated_rewards.fill(rewards_value)
 
     def reset_action_speculated_rewards(self):
         self._actions_speculated_rewards.fill(0)
@@ -44,13 +41,21 @@ class BaseBandit(object):
         self._actions_counts[index] += 1
 
     def __str__(self) -> str:
-        return 'Multi-armed {} bandit model, using {} prediction method \n' \
+        return 'Multi-armed {} bandit model, using {} prediction method \n\n ' \
+               '    with step_size {}, epsilon {}, confidence {} \n\n' \
                '    actions are: {} \n' \
                '    current biases are: {} \n' \
-               '    actions counts are: {} \n\n'.format(
-            self._decision_type,
-            self._prediction_type,
-            self._actions,
-            self._actions_speculated_rewards,
-            self._actions_counts
-        )
+               '    actions counts are: {} \n\n' \
+            .format(self._decision_type, self._prediction_type,
+                    self._step_size, self._epsilon, self._confidence,
+                    self._actions, self._actions_speculated_rewards, self._actions_counts)
+
+    def __eq__(self, other) -> bool:
+        return self._step_size == other._step_size \
+               and self._epsilon == other._epsilon \
+               and self._confidence == other._confidence \
+               and self._decision_type == other._decision_type \
+               and self._prediction_type == other._prediction_type \
+               and all(self._actions == other._actions) \
+               and all(self._actions_speculated_rewards == other._actions_speculated_rewards) \
+               and all(self._actions_counts == other._actions_counts)
