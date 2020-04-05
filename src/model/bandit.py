@@ -5,8 +5,8 @@ from src.model.arguments import Arguments
 
 class Bandit(BaseBandit, Arguments):
     def __init__(
-            self, actions_keys: [any],
-            optimistic_value=0, step_size=0.01, confidence=0.01,
+            self, actions_keys: [str],
+            optimistic_value=0, step_size=0.01, epsilon=0.01, confidence=0.01,
             prediction_type='step_size', decision_type='e_greedy'
     ) -> None:
         BaseBandit.__init__(
@@ -14,6 +14,7 @@ class Bandit(BaseBandit, Arguments):
             actions_keys=actions_keys,
             optimistic_value=optimistic_value,
             step_size=step_size,
+            epsilon=epsilon,
             confidence=confidence,
             prediction_type=prediction_type,
             decision_type=decision_type
@@ -33,7 +34,7 @@ class Bandit(BaseBandit, Arguments):
 
         next_action_index = self._choose_action(decision_type=self._decision_type)
         self._increment_action_count(next_action_index)
-        return next_action_index, self._actions[next_action_index]
+        return next_action_index, self._actions_keys[next_action_index]
 
     def _update_speculated_rewards_array(
             self, last_action_index: int, target: float
@@ -55,6 +56,6 @@ class Bandit(BaseBandit, Arguments):
         return isinstance(other, type(self)) and BaseBandit.__eq__(self, other)
 
     def __copy__(self):
-        new_bandit = Bandit(actions_keys=self._actions)
+        new_bandit = Bandit(actions_keys=self._actions_keys)
         new_bandit.__dict__ = self.__dict__
         return new_bandit

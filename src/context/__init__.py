@@ -1,3 +1,1 @@
-class BaseContext(object):
-    def __init__(self):
-        pass
+from src.context.context import Context

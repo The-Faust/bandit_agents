@@ -1,5 +1,4 @@
 from numpy import zeros, full, array
-
 from src.model.functions import action_decision_functions
 
 
@@ -8,14 +7,14 @@ from src.model.functions import action_decision_functions
 #  (they depend on the decision function employed by the person using the model)
 class BaseBandit(object):
     def __init__(
-            self, actions_keys: [any],
+            self, actions_keys: [str],
             optimistic_value=0, step_size=0.01, epsilon=0.01, confidence=0.01,
             prediction_type='step_size', decision_type='is_greedy'
     ) -> None:
         self._step_size = step_size
         self._epsilon = epsilon
         self._confidence = confidence
-        self._actions = array(actions_keys)
+        self._actions_keys = array(actions_keys)
         self._actions_speculated_rewards = full(len(actions_keys), optimistic_value)
         self._actions_counts = zeros(len(actions_keys))
         self._prediction_type = prediction_type
@@ -42,13 +41,13 @@ class BaseBandit(object):
 
     def __str__(self) -> str:
         return 'Multi-armed {} bandit model, using {} prediction method \n\n ' \
-               '    with step_size {}, epsilon {}, confidence {} \n\n' \
-               '    actions are: {} \n' \
-               '    current biases are: {} \n' \
-               '    actions counts are: {} \n\n' \
+               '  with step_size {}, epsilon {}, confidence {} \n\n' \
+               '  actions are: {} \n' \
+               '  current biases are: {} \n' \
+               '  actions counts are: {} \n\n ' \
             .format(self._decision_type, self._prediction_type,
                     self._step_size, self._epsilon, self._confidence,
-                    self._actions, self._actions_speculated_rewards, self._actions_counts)
+                    self._actions_keys, self._actions_speculated_rewards, self._actions_counts)
 
     def __eq__(self, other) -> bool:
         return self._step_size == other._step_size \
@@ -56,6 +55,6 @@ class BaseBandit(object):
                and self._confidence == other._confidence \
                and self._decision_type == other._decision_type \
                and self._prediction_type == other._prediction_type \
-               and all(self._actions == other._actions) \
+               and all(self._actions_keys == other._actions) \
                and all(self._actions_speculated_rewards == other._actions_speculated_rewards) \
                and all(self._actions_counts == other._actions_counts)

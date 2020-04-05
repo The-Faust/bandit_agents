@@ -3,6 +3,7 @@ This is a mixin class so omission of class parameters are intended
 (said parameters must exists in child class)
 """
 
+
 class Arguments:
     def _get_prediction_function_arguments(
             self, prediction_type: str, last_action_index: int, target: float
