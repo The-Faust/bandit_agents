@@ -1,0 +1,1 @@
+from src.Shared.exceptions.base_exception import BaseException

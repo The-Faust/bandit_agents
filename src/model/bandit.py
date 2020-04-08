@@ -1,5 +1,5 @@
 from numpy import count_nonzero, nditer
-from src.model import BaseBandit
+from src.model.base_bandit import BaseBandit
 from src.model.arguments import Arguments
 
 
