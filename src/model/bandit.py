@@ -49,7 +49,7 @@ class Bandit(BaseBandit, Arguments):
 
     def _choose_action(self, decision_type='e_greedy') -> int:
         return self._prediction_decision_functions.decision_formulas.__dict__[decision_type](
-            *self._get_decision_function_arguments(decision_type=decision_type)
+            *self._get_decision_function_arguments(decision_type)
         )
 
     def __eq__(self, other):

@@ -55,6 +55,6 @@ class BaseBandit(object):
                and self._confidence == other._confidence \
                and self._decision_type == other._decision_type \
                and self._prediction_type == other._prediction_type \
-               and all(self._actions_keys == other._actions) \
+               and all(self._actions_keys == other._actions_keys) \
                and all(self._actions_speculated_rewards == other._actions_speculated_rewards) \
                and all(self._actions_counts == other._actions_counts)
