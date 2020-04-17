@@ -14,9 +14,15 @@ class BaseContext(object):
         self.context_bandits: {any: ContextBandit} = {}
 
     def add_bandit(
-            self, actions_keys: [any], bandit_key: str, optimistic_value=0.0,
-            step_size=0.01, epsilon=0.01, confidence=0.01,
-            prediction_type='step_size', decision_type='e_greedy'
+            self, actions_keys: [any],
+            bandit_key: str,
+            optimistic_value: float = 0.0,
+            step_size: float = 0.01,
+            epsilon: float = 0.01,
+            confidence: float = 0.01,
+            bound_type: str = 'ucb',
+            prediction_type: str = 'step_size',
+            decision_type: str = 'e_greedy'
     ):
         # TODO: find a more elegant way to raise exception
         self._check_if_all_actions_are_in_context(actions_keys)
@@ -27,7 +33,7 @@ class BaseContext(object):
         precursor = BanditPrecursor(
             actions_keys, bandit_key, optimistic_value,
             step_size, epsilon, confidence,
-            prediction_type, decision_type
+            bound_type, prediction_type, decision_type
         )
         self.context_bandits[precursor.bandit_key] = ContextBandit(Bandit(*precursor.get_bandit_arguments()))
 
@@ -62,7 +68,7 @@ class BaseContext(object):
         return 'Context: \n' \
                '    with actions: {} \n\n' \
                '    with bandits: {} \n\n'\
-            .format(self.actions, self.context_bandits)
+            .format(self.actions, '    ' + '\n    '.join([str(bandit) for bandit in self.context_bandits.values()]))
 
     # TODO: Although not the best __eq__ function it still better than nothing
     def __eq__(self, other):

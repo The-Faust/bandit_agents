@@ -1,8 +1,7 @@
-from src.model.functions.decision.e_greedy import EGreedy
-from src.model.functions.decision.ucb import UCB
+from typing import Callable
+from src.model.functions.decision.e_greedy import e_greedy
 
-
-class DecisionFunctions:
-    def __init__(self):
-        self.e_greedy = EGreedy.make_decision
-        self.ucb = UCB.make_decision
+decision_functions_dict: {str: Callable[..., int]} = {
+    'e_greedy': e_greedy,
+    'greedy': e_greedy
+}

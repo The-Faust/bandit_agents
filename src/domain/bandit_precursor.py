@@ -1,8 +1,14 @@
 class BanditPrecursor(object):
     def __init__(
-            self, actions_keys: [any], bandit_key: any, optimistic_value=0.0,
-            step_size=0.01, epsilon=0.01, confidence=0.01,
-            prediction_type='step_size', decision_type='e_greedy'
+            self, actions_keys: [any],
+            bandit_key: any,
+            optimistic_value: float = 0.0,
+            step_size: float = 0.01,
+            epsilon: float = 0.01,
+            confidence: float = 0.01,
+            bound_type: str = 'ucb',
+            prediction_type: str = 'step_size',
+            decision_type: str = 'e_greedy'
     ):
         self.bandit_key = bandit_key
         self.actions = actions_keys
@@ -10,14 +16,18 @@ class BanditPrecursor(object):
         self.step_size = step_size
         self.epsilon = epsilon
         self.confidence = confidence
+        self.bound_type = bound_type
         self.prediction_type = prediction_type
         self.decision_type = decision_type
 
-    def get_bandit_arguments(self) -> ([any], float, float, float, float, str, str):
+    def get_bandit_arguments(self) -> (
+            [any], float, float, float, float, str, str
+    ):
         return self.actions, \
                self.optimistic_value, \
                self.step_size, \
                self.epsilon, \
                self.confidence, \
+               self.bound_type, \
                self.prediction_type, \
                self.decision_type

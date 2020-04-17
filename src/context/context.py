@@ -1,3 +1,6 @@
+# TODO: My biggest qualm with this version of context is that it is now asynchronous
+#  -> This means 2 bandits cannot take action at the same time. I'll have to think about a solution
+
 from src.context.base_context import BaseContext
 
 
@@ -8,7 +11,7 @@ class Context(BaseContext):
         BaseContext.__init__(self)
 
     def take_action(self, bandit_key: any, target: float):
-        return self.actions[self._make_bandit_decide(bandit_key, target)]
+        return self.actions[self._make_bandit_decide(bandit_key, target)].action
 
     # TODO: with my actual grasp on python,
     #  I might've limited myself by creating custom objects for bandits in context.

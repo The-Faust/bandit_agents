@@ -1,5 +1,4 @@
 from numpy import zeros, full, array
-from src.model.functions import action_decision_functions
 
 
 # TODO: find a way so that epsilon, confidence and step_size
@@ -8,8 +7,13 @@ from src.model.functions import action_decision_functions
 class BaseBandit(object):
     def __init__(
             self, actions_keys: [str],
-            optimistic_value=0, step_size=0.01, epsilon=0.01, confidence=0.01,
-            prediction_type='step_size', decision_type='is_greedy'
+            optimistic_value: float = 0.,
+            step_size: float = 0.01,
+            epsilon: float = 0.01,
+            confidence: float = 0.01,
+            bound_type: str = 'ucb',
+            prediction_type: str = 'step_size',
+            decision_type: str = 'greedy'
     ) -> None:
         self._step_size = step_size
         self._epsilon = epsilon
@@ -17,9 +21,9 @@ class BaseBandit(object):
         self._actions_keys = array(actions_keys)
         self._actions_speculated_rewards = full(len(actions_keys), optimistic_value)
         self._actions_counts = zeros(len(actions_keys))
+        self._bound_type = bound_type
         self._prediction_type = prediction_type
         self._decision_type = decision_type
-        self._prediction_decision_functions = action_decision_functions
 
     def set_step_size(self, step_size_value: int) -> None:
         self._step_size = step_size_value
@@ -29,6 +33,9 @@ class BaseBandit(object):
 
     def reset_action_speculated_rewards(self):
         self._actions_speculated_rewards.fill(0)
+
+    def set_bound_type(self, bound_type: str):
+        self._bound_type = bound_type
 
     def set_prediction_type(self, prediction_type: str):
         self._prediction_type = prediction_type
@@ -53,6 +60,7 @@ class BaseBandit(object):
         return self._step_size == other._step_size \
                and self._epsilon == other._epsilon \
                and self._confidence == other._confidence \
+               and self._bound_type == other._bound_type \
                and self._decision_type == other._decision_type \
                and self._prediction_type == other._prediction_type \
                and all(self._actions_keys == other._actions_keys) \

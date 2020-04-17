@@ -1,7 +1,8 @@
-from src.model.functions.prediction.functions import step_size, mean
+from typing import Callable, Iterable
+from src.model.functions.prediction.mean import mean
+from src.model.functions.prediction.step_size import step_size
 
-
-class PredictionFunctions:
-    def __init__(self):
-        self.step_size = step_size
-        self.mean = mean
+prediction_functions_dict: {str: Callable[..., Iterable[float]]} = {
+    'step_size': step_size,
+    'mean': mean
+}
