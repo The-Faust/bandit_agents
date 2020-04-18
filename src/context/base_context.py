@@ -65,10 +65,16 @@ class BaseContext(object):
         return True
 
     def __str__(self):
+        bandits = '\n\n'.join([
+            str(bandit)
+            for bandit
+            in self.context_bandits.values()
+        ])
+
         return 'Context: \n' \
                '    with actions: {} \n\n' \
-               '    with bandits: {} \n\n'\
-            .format(self.actions, '    ' + '\n    '.join([str(bandit) for bandit in self.context_bandits.values()]))
+               '    with bandits: {} \n\n' \
+            .format(self.actions, bandits)
 
     # TODO: Although not the best __eq__ function it still better than nothing
     def __eq__(self, other):

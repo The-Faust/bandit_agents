@@ -1,3 +1,9 @@
+"""
+As seen when this test is run the model ends up finding out which actions are the most effective
+    after less than a 100 iterations if optimistic value is set near average of functions
+"""
+
+
 from src.context import Context
 from scipy.stats.distributions import gamma
 
@@ -34,7 +40,7 @@ def add_bandit_to_context(context: Context, bandit_key: str, actions_keys: [str]
         step_size=0.1,
         epsilon=0.2,
         confidence=0.7,
-        optimistic_value=50,
+        optimistic_value=35,
         decision_type='greedy'
     )
     return context
