@@ -3,7 +3,7 @@ from random import randint
 from src.context.base_context import BaseContext
 
 
-# TODO: My biggest qualm with this version of context is that it is now asynchronous
+# TODO: My biggest qualm with this version of context is that it is not asynchronous
 #  -> This means 2 bandits cannot take action at the same time. I'll have to think about a solution
 
 # TODO: I would LOVE to make it so that I could export contexts as pandas dataframes
