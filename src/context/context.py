@@ -11,13 +11,14 @@ from src.context.base_context import BaseContext
 class Context(BaseContext):
     # rule will be defined when creating a session
     # (should be out of context since it might depend on other inputs than rewards)
-    def __init__(self, bandit_selector_rule: Callable[..., str]):
+    def __init__(self, bandit_selector_rule: Callable[..., str] = None):
         BaseContext.__init__(self)
 
         # Bandit selector rule is what chooses the
         #   bandit that will take action at current epoch
         self._bandit_selector_rule: Callable = bandit_selector_rule \
             if bandit_selector_rule is not None \
+               and isinstance(bandit_selector_rule, Callable) \
             else lambda: self.context_bandits[
                 randint(0, len(self.context_bandits.keys()))
             ]
