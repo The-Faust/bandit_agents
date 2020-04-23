@@ -76,6 +76,6 @@ class BaseContext(object):
                '    with bandits: {} \n\n' \
             .format(self.actions, bandits)
 
-    # TODO: Although not the best __eq__ function it still better than nothing
+    # TODO: Although not the best __eq__ function it's still better than nothing
     def __eq__(self, other):
         return self.__dict__ == other.__dict__

@@ -1,10 +1,10 @@
 from src.Shared.exceptions import BaseException
 
 
-class ActionNotInContextException(BaseException):
+class BanditKeyNotInContextException(BaseException):
     def __init__(self, value: any):
         BaseException.__init__(
             self,
-            message='{} \n    action not in context'.format(self.__class__.__name__),
+            message='{} \n    Bandit key not in context'.format(self.__class__.__name__),
             value=value
         )

@@ -1,6 +1,7 @@
 from typing import Callable
 from random import randint
 from src.context.base_context import BaseContext
+from src.Shared.exceptions.context_exceptions import BanditKeyNotInContextException
 
 
 # TODO: My biggest qualm with this version of context is that it is now asynchronous
@@ -11,29 +12,26 @@ from src.context.base_context import BaseContext
 class Context(BaseContext):
     # rule will be defined when creating a session
     # (should be out of context since it might depend on other inputs than rewards)
-    def __init__(self, bandit_selector_rule: Callable[..., str] = None):
+    def __init__(self, bandit_selector_rule: Callable[..., any] = None):
         BaseContext.__init__(self)
 
         # Bandit selector rule is what chooses the
         #   bandit that will take action at current epoch
-        self._bandit_selector_rule: Callable = bandit_selector_rule \
-            if bandit_selector_rule is not None \
-               and isinstance(bandit_selector_rule, Callable) \
-            else lambda: self.context_bandits[
-                randint(0, len(self.context_bandits.keys()))
-            ]
+        self._bandit_selector_rule: Callable = bandit_selector_rule if all([
+            bandit_selector_rule is not None,
+            isinstance(bandit_selector_rule, Callable)
+        ]) else lambda: self.context_bandits[
+            randint(0, len(self.context_bandits.keys()))
+        ]
 
     def take_action_with_rule(self, target, *args, **kwargs):
         bandit_key = self._bandit_selector_rule(*args, **kwargs)
         bandits_keys = self.context_bandits.keys()
-        return self.take_action(
-            bandit_key
-            if bandit_key in bandits_keys
-            else bandits_keys[
-                randint(0, len(bandits_keys))
-            ],
-            target
-        )
+
+        if bandit_key in bandits_keys:
+            return self.take_action(bandit_key, target)
+
+        raise BanditKeyNotInContextException(bandit_key)
 
     def take_action(self, bandit_key: any, target: float):
         return self.actions[self._make_bandit_decide(bandit_key, target)].action

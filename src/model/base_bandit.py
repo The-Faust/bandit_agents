@@ -51,18 +51,26 @@ class BaseBandit(object):
                '  with step_size {}, epsilon {}, confidence {} \n\n' \
                '  actions are: {} \n' \
                '  current biases are: {} \n' \
-               '  actions counts are: {} \n\n ' \
-            .format(self._decision_type, self._prediction_type,
-                    self._step_size, self._epsilon, self._confidence,
-                    self._actions_keys, self._actions_speculated_rewards, self._actions_counts)
+               '  actions counts are: {} \n\n '.format(
+                    self._decision_type,
+                    self._prediction_type,
+                    self._step_size,
+                    self._epsilon,
+                    self._confidence,
+                    self._actions_keys,
+                    self._actions_speculated_rewards,
+                    self._actions_counts
+                )
 
     def __eq__(self, other) -> bool:
-        return self._step_size == other._step_size \
-               and self._epsilon == other._epsilon \
-               and self._confidence == other._confidence \
-               and self._bound_type == other._bound_type \
-               and self._decision_type == other._decision_type \
-               and self._prediction_type == other._prediction_type \
-               and all(self._actions_keys == other._actions_keys) \
-               and all(self._actions_speculated_rewards == other._actions_speculated_rewards) \
-               and all(self._actions_counts == other._actions_counts)
+        return all([
+            self._step_size == other._step_size,
+            self._epsilon == other._epsilon,
+            self._confidence == other._confidence,
+            self._bound_type == other._bound_type,
+            self._decision_type == other._decision_type,
+            self._prediction_type == other._prediction_type,
+            all(self._actions_keys == other._actions_keys),
+            all(self._actions_speculated_rewards == other._actions_speculated_rewards),
+            all(self._actions_counts == other._actions_counts)
+        ])
