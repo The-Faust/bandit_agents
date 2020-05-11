@@ -1,7 +1,13 @@
+from typing import TypeVar, List
+
+action_key_type = TypeVar('action_key_type', int, float, str)
+bandit_key_type = TypeVar('bandit_key_type', int, str)
+
+
 class BanditPrecursor(object):
     def __init__(
-            self, actions_keys: [any],
-            bandit_key: any,
+            self, actions_keys: List[action_key_type],
+            bandit_key: bandit_key_type,
             optimistic_value: float = 0.0,
             step_size: float = 0.01,
             epsilon: float = 0.01,

@@ -7,7 +7,7 @@ def main():
 
 if __name__ == '__main__':
     print('    Only running a model    ')
-    session()
+    # session()
     print('____________________________\n')
 
     print('    Only running a context (containing k bandits)    ')

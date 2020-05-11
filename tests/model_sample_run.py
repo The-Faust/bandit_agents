@@ -1,4 +1,4 @@
-from src import Bandit
+from src.model.bandit import Bandit
 from random import uniform
 from numpy import array
 

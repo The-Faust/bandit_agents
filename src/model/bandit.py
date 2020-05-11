@@ -1,14 +1,19 @@
 from numpy import count_nonzero, nditer
+from typing import TypeVar, List
+
 from src.model.base_bandit import BaseBandit
 from src.model.arguments import Arguments
-from src.model.functions.bounds import bound_functions_dict
-from src.model.functions.prediction import prediction_functions_dict
-from src.model.functions.decision import decision_functions_dict
+from src.model.functions import bound_functions_dict
+from src.model.functions import prediction_functions_dict
+from src.model.functions import decision_functions_dict
+
+action_key_type = TypeVar('action_key_type', int, float, str)
+bandit_key_type = TypeVar('bandit_key_type', int, str)
 
 
 class Bandit(BaseBandit, Arguments):
     def __init__(
-            self, actions_keys: [str],
+            self, actions_keys: List[action_key_type],
             optimistic_value: float = 0.,
             step_size: float = 0.01,
             epsilon: float = 0.01,

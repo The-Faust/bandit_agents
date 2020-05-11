@@ -2,7 +2,10 @@ from numpy import argmax
 from random import uniform, randint
 
 
-def e_greedy(speculated_reward_array: [float], epsilon: float) -> int:
+def e_greedy(
+        speculated_reward_array: [float],
+        epsilon: float
+) -> int:
     return _e_greedy_chose_action(speculated_reward_array, _is_greedy(epsilon))
 
 

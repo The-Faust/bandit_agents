@@ -2,7 +2,9 @@ from src.model.bandit import Bandit
 
 
 class ContextBandit(object):
-    def __init__(self, bandit: Bandit):
+    def __init__(
+            self, bandit: Bandit
+    ):
         self.bandit = bandit
         self.last_action_index = 0
 

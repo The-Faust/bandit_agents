@@ -1,21 +1,22 @@
-"""
-I have a profound disdain for using types like [any] in my code.
-I probably should create custom types for this
-"""
+from typing import Callable, TypeVar, List
 
 from src.domain import BanditPrecursor, ContextAction, ContextBandit
-from src.model import Bandit
-from src.Shared.exceptions.context_exceptions import ActionNotInContextException
+from src.model.bandit import Bandit
+from src.Shared.exceptions import ex, context_exceptions as exceptions
+
+
+action_key_type = TypeVar('action_key_type', int, float, str)
+bandit_key_type = TypeVar('bandit_key_type', int, str)
 
 
 class BaseContext(object):
     def __init__(self):
-        self.actions: {any: ContextAction} = {}
-        self.context_bandits: {any: ContextBandit} = {}
+        self.actions: {action_key_type: ContextAction} = {}
+        self.context_bandits: {bandit_key_type: ContextBandit} = {}
 
     def add_bandit(
-            self, actions_keys: [any],
-            bandit_key: str,
+            self, actions_keys: List[action_key_type],
+            bandit_key: bandit_key_type,
             optimistic_value: float = 0.0,
             step_size: float = 0.01,
             epsilon: float = 0.01,
@@ -24,32 +25,30 @@ class BaseContext(object):
             prediction_type: str = 'step_size',
             decision_type: str = 'e_greedy'
     ):
-        # TODO: find a more elegant way to raise exception
         self._check_if_all_actions_are_in_context(actions_keys)
 
-        # TODO: existence of banditPrecursor might be a bit of over-engineering I possibly will have to remove it.
-        #  It is a remnant of when I wanted to define bandits as a matrix that would've been fed to the context object
-        #  which would then assemble all of them at once.
         precursor = BanditPrecursor(
-            actions_keys, bandit_key, optimistic_value,
-            step_size, epsilon, confidence,
-            bound_type, prediction_type, decision_type
+            actions_keys,
+            bandit_key,
+            optimistic_value,
+            step_size,
+            epsilon,
+            confidence,
+            bound_type,
+            prediction_type,
+            decision_type
         )
         self.context_bandits[precursor.bandit_key] = ContextBandit(Bandit(*precursor.get_bandit_arguments()))
 
     def _check_if_all_actions_are_in_context(self, actions_keys: [any]):
-        all(self._check_if_action_is_in_context(action_key) for action_key in actions_keys)
+        all(self._check_if_action_is_in_context(action_key)for action_key in actions_keys)
 
-    # TODO: I tend to dislike if statements and want to limit them in my code.
-    #  If I find a better alternative for this I'll change this method
     def _check_if_action_is_in_context(self, action_key: any):
-        if action_key in self.actions.keys():
-            return True
-        raise ActionNotInContextException(action_key)
+        return True if action_key in self.actions.keys() else ex(
+            exceptions.ActionNotInContextException(action_key)
+        )
 
-    # TODO: I would recommend actual actions to be functions,
-    #  but I don't want to be restrictive in usage of the library
-    def add_action(self, action_key: str, action: any):
+    def add_action(self, action_key: str, action: Callable[..., float]):
         self.actions[action_key] = ContextAction(action)
 
     def set_bandit_step_size(self, bandit_key: any, step_size_value: float) -> bool:
@@ -76,6 +75,5 @@ class BaseContext(object):
                '    with bandits: {} \n\n' \
             .format(self.actions, bandits)
 
-    # TODO: Although not the best __eq__ function it's still better than nothing
     def __eq__(self, other):
         return self.__dict__ == other.__dict__

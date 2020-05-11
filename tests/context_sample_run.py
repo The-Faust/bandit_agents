@@ -3,6 +3,8 @@ As seen when this test is run the model ends up finding out which actions are th
     after less than a 100 iterations if optimistic value is set near average of functions
 """
 
+from typing import Callable
+
 
 from src.context import Context
 from scipy.stats.distributions import gamma
@@ -23,7 +25,7 @@ def init_context() -> Context:
 
 
 # how to add actions to context
-def add_actions_to_context(context: Context, actions: {str: any}) -> Context:
+def add_actions_to_context(context: Context, actions: {str: Callable[..., float]}) -> Context:
     [
         context.add_action(action_key, actions[action_key])
         for action_key
@@ -73,6 +75,6 @@ def sample_run(n_iter):
 
     reward = 0
     for _ in range(n_iter):
-        reward = context.take_action('seller', reward)()
+        reward = context.take_action('seller', reward)
 
     print(context)

@@ -1,4 +1,8 @@
 from numpy import zeros, full, array
+from typing import TypeVar, List
+
+action_key_type = TypeVar('action_key_type', int, float, str)
+bandit_key_type = TypeVar('bandit_key_type', int, str)
 
 
 # TODO: find a way so that epsilon, confidence and step_size
@@ -6,7 +10,7 @@ from numpy import zeros, full, array
 #  (they depend on the decision function employed by the person using the model)
 class BaseBandit(object):
     def __init__(
-            self, actions_keys: [str],
+            self, actions_keys: [action_key_type],
             optimistic_value: float = 0.,
             step_size: float = 0.01,
             epsilon: float = 0.01,
