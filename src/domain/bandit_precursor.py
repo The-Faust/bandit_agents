@@ -1,7 +1,5 @@
-from typing import TypeVar, List
-
-action_key_type = TypeVar('action_key_type', int, float, str)
-bandit_key_type = TypeVar('bandit_key_type', int, str)
+from typing import List
+from src.domain.types import action_key_type, bandit_key_type
 
 
 class BanditPrecursor(object):

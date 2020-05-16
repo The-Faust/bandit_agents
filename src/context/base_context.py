@@ -1,12 +1,9 @@
-from typing import Callable, TypeVar, List
+from typing import Callable, List
 
 from src.domain import BanditPrecursor, ContextAction, ContextBandit
 from src.model.bandit import Bandit
 from src.Shared.exceptions import ex, context_exceptions as exceptions
-
-
-action_key_type = TypeVar('action_key_type', int, float, str)
-bandit_key_type = TypeVar('bandit_key_type', int, str)
+from src.domain.types import action_key_type, bandit_key_type
 
 
 class BaseContext(object):

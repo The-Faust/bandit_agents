@@ -1,8 +1,6 @@
 from numpy import zeros, full, array
-from typing import TypeVar, List
 
-action_key_type = TypeVar('action_key_type', int, float, str)
-bandit_key_type = TypeVar('bandit_key_type', int, str)
+from src.domain.types import action_key_type, bandit_key_type
 
 
 # TODO: find a way so that epsilon, confidence and step_size

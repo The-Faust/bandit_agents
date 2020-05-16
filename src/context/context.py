@@ -3,10 +3,7 @@ from typing import Callable, Iterable
 from src.context.base_context import BaseContext
 from src.Shared.exceptions import ex, context_exceptions as exceptions
 
-from typing import TypeVar, List
-
-action_key_type = TypeVar('action_key_type', int, float, str)
-bandit_key_type = TypeVar('bandit_key_type', int, str)
+from src.domain.types import bandit_key_type
 
 
 class Context(BaseContext):
@@ -27,7 +24,7 @@ class Context(BaseContext):
             exceptions.BanditKeyNotInContextException(bandit_key)
         )
 
-    def take_action(self, bandit_key: any, target: float, *args, **kwargs):
+    def take_action(self, bandit_key: bandit_key_type, target: float, *args, **kwargs):
         return self.actions[self._make_bandit_decide(bandit_key, target)].act(*args, **kwargs)
 
     def _make_bandit_decide(self, bandit_key: any, target: float):

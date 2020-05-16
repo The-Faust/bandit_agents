@@ -1,14 +1,12 @@
 from numpy import count_nonzero, nditer
-from typing import TypeVar, List
+from typing import List
 
 from src.model.base_bandit import BaseBandit
 from src.model.arguments import Arguments
 from src.model.functions import bound_functions_dict
 from src.model.functions import prediction_functions_dict
 from src.model.functions import decision_functions_dict
-
-action_key_type = TypeVar('action_key_type', int, float, str)
-bandit_key_type = TypeVar('bandit_key_type', int, str)
+from src.domain.types import action_key_type
 
 
 class Bandit(BaseBandit, Arguments):
