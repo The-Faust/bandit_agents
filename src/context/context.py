@@ -1,7 +1,7 @@
 from typing import Callable, Iterable
 
 from src.context.base_context import BaseContext
-from src.Shared.exceptions import ex, context_exceptions as exceptions
+from src.shared.exceptions import ex, context_exceptions as exceptions
 
 from src.domain.types import bandit_key_type
 
@@ -25,7 +25,7 @@ class Context(BaseContext):
         )
 
     def take_action(self, bandit_key: bandit_key_type, target: float, *args, **kwargs):
-        return self.actions[self._make_bandit_decide(bandit_key, target)].act(*args, **kwargs)
+        return self.actions[self._make_bandit_decide(bandit_key, target)].act(bandit_key, self.context_bandits, *args, **kwargs)
 
     def _make_bandit_decide(self, bandit_key: any, target: float):
         bandit_last_action_index, action_key = self.context_bandits[bandit_key].bandit.decide(

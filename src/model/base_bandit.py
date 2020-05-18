@@ -17,6 +17,9 @@ class BaseBandit(object):
             prediction_type: str = 'step_size',
             decision_type: str = 'greedy'
     ) -> None:
+        # TODO: I profoundly dislike the idea to not link the action keys with their respective speculated_rewards...
+        #  instead of having a dict that link the key with its speculated reward.
+        #  Since super performance is not what I am going for here -> I might have to change that..
         self._step_size = step_size
         self._epsilon = epsilon
         self._confidence = confidence
@@ -30,23 +33,26 @@ class BaseBandit(object):
     def set_step_size(self, step_size_value: int) -> None:
         self._step_size = step_size_value
 
-    def reset_action_count(self):
+    def reset_action_count(self) -> None:
         self._actions_counts.fill(0)
 
-    def reset_action_speculated_rewards(self):
+    def reset_action_speculated_rewards(self) -> None:
         self._actions_speculated_rewards.fill(0)
 
-    def set_bound_type(self, bound_type: str):
+    def set_bound_type(self, bound_type: str) -> None:
         self._bound_type = bound_type
 
-    def set_prediction_type(self, prediction_type: str):
+    def set_prediction_type(self, prediction_type: str) -> None:
         self._prediction_type = prediction_type
 
-    def set_decision_type(self, decision_type: str):
+    def set_decision_type(self, decision_type: str) -> None:
         self._decision_type = decision_type
 
-    def _increment_action_count(self, index: int):
+    def _increment_action_count(self, index: int) -> None:
         self._actions_counts[index] += 1
+
+    def _find_action_key_index(self, action_key: action_key_type) -> int:
+        return list(self._actions_keys).index(action_key)
 
     def __str__(self) -> str:
         return 'Multi-armed {} bandit model, using {} prediction method \n\n ' \

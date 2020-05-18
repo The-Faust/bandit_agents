@@ -1,5 +1,4 @@
 from numpy import count_nonzero, nditer
-from typing import List
 
 from src.model.base_bandit import BaseBandit
 from src.model.arguments import Arguments
@@ -11,7 +10,7 @@ from src.domain.types import action_key_type
 
 class Bandit(BaseBandit, Arguments):
     def __init__(
-            self, actions_keys: List[action_key_type],
+            self, actions_keys: [action_key_type],
             optimistic_value: float = 0.,
             step_size: float = 0.01,
             epsilon: float = 0.01,
@@ -21,8 +20,7 @@ class Bandit(BaseBandit, Arguments):
             decision_type: str = 'e_greedy'
     ) -> None:
         BaseBandit.__init__(
-            self,
-            actions_keys=actions_keys,
+            self, actions_keys=actions_keys,
             optimistic_value=optimistic_value,
             step_size=step_size,
             epsilon=epsilon,
@@ -37,11 +35,24 @@ class Bandit(BaseBandit, Arguments):
         self.prediction_functions = prediction_functions_dict
         self.decision_functions = decision_functions_dict
 
-    def fit(self, actions_indexes: [int], target_list: [float]):
-        map(self.decide, nditer([actions_indexes, target_list]))
+    def fit_with_actions_keys(
+            self, actions_keys: [action_key_type],
+            target_list: [float]
+    ) -> None:
+        map(self.fit_with_action_key, nditer([actions_keys, target_list]))
+
+    def fit_with_action_key(
+            self, last_action_key: action_key_type,
+            target: float
+    ) -> None:
+        self.decide(
+            self._find_action_key_index(last_action_key),
+            target
+        )
 
     def decide(
-            self, last_action_index=-1, target=0
+            self, last_action_index=-1,
+            target=0.0
     ) -> (int, any):
         if count_nonzero(self._actions_counts) > 0:
             self._actions_speculated_rewards = self._update_speculated_rewards_array(

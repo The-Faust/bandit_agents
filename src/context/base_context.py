@@ -2,7 +2,7 @@ from typing import Callable, List
 
 from src.domain import BanditPrecursor, ContextAction, ContextBandit
 from src.model.bandit import Bandit
-from src.Shared.exceptions import ex, context_exceptions as exceptions
+from src.shared.exceptions import ex, context_exceptions as exceptions
 from src.domain.types import action_key_type, bandit_key_type
 
 
@@ -23,6 +23,10 @@ class BaseContext(object):
             decision_type: str = 'e_greedy'
     ):
         self._check_if_all_actions_are_in_context(actions_keys)
+        map(
+            lambda action_key: self.actions[action_key].add_bandit_key(bandit_key),
+            actions_keys
+        )
 
         precursor = BanditPrecursor(
             actions_keys,
@@ -46,7 +50,7 @@ class BaseContext(object):
         )
 
     def add_action(self, action_key: str, action: Callable[..., float]):
-        self.actions[action_key] = ContextAction(action)
+        self.actions[action_key] = ContextAction(action_key, action)
 
     def set_bandit_step_size(self, bandit_key: any, step_size_value: float) -> bool:
         self.context_bandits[bandit_key].set_step_size(step_size_value)
