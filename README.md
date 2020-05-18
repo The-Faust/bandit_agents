@@ -1,7 +1,7 @@
 # Bandit Maker #
 Welcome to bandit maker!
 
-If you don't know much about reinforced learning I highly suggest you to read a little on the subject before using this library. 
+If you don't know much about reinforcement learning I highly suggest you to read a little on the subject before using this library. 
 I will do my best to keep the code retro-compatible for later releases
 
 ## When to use this library? ##
@@ -19,6 +19,7 @@ when your problem can be modeled as an agent that have to choose what action to 
   - refactor of how context update bandits
   - unit testing
   - documentation
+  - true CI
   - add sessions to the library (object that will instantiate contexts and handle events)
 ```
 ### Not for sure (but would be neat) ###
@@ -30,8 +31,8 @@ when your problem can be modeled as an agent that have to choose what action to 
 ```
 
 ## How to use the model ##
-for complete implementation see the tests folder in the project
-from here ./tests/context_sample_run.py
+for complete implementation see the tests folder in the project.
+From here ./tests/context_sample_run.py
 
 ### actions ###
 Lets pretend we have some functions who return rewards said functions are
@@ -90,6 +91,8 @@ def add_bandit_to_context(context: Context, bandit_key: str, actions_keys: [str]
 ### finally ###
 we put it all together and run the model/train it
 ```python
+# at a later date this function will be unnecessary because of the session object see 
+#   "next steps (what to expect in future releases)" section of the README
 def sample_run(n_iter):
     actions = define_actions()
     context = init_context()

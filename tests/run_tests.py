@@ -1,8 +1,9 @@
-from tests import sample_run
+#!/usr/bin/env python3
+from tests.context_sample_run import sample_run
 
 
 def main():
-    sample_run(1000)
+    sample_run(10000)
 
 
 if __name__ == '__main__':
