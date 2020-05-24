@@ -1,0 +1,6 @@
+Welcome to bandit maker!
+
+If you don't know much about reinforcement learning I highly suggest you to read a little on the subject before using this library.
+I will do my best to keep the code retro-compatible for later releases
+
+Note: Git seems to want me to add a description (as of now, the best description is in the README so read the README)
