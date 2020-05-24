@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
+import unittest
+
 from tests.context_sample_run import sample_run
+
+from tests.tests_model import TestsUCB
+from tests.tests_model import TestsEGreedy
+from tests.tests_model import TestsStepSize
+from tests.tests_model import TestsMean
 
 
 def main():
@@ -9,4 +16,5 @@ def main():
 if __name__ == '__main__':
     print('    Only running a context (containing k bandits)    ')
     main()
+    unittest.main()
     print('____________________________\n')
