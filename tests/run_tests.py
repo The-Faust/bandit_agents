@@ -7,6 +7,7 @@ from tests.tests_model import TestsUCB
 from tests.tests_model import TestsEGreedy
 from tests.tests_model import TestsStepSize
 from tests.tests_model import TestsMean
+from tests.tests_model import TestBandit
 
 
 def main():
@@ -14,7 +15,7 @@ def main():
 
 
 if __name__ == '__main__':
-    print('    Only running a context (containing k bandits)    ')
-    main()
-    unittest.main()
+    # print('    Only running a context (containing k bandits)    ')
+    # main()
+    unittest.main(verbosity=2)
     print('____________________________\n')
