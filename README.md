@@ -7,6 +7,8 @@ I will do my best to keep the code retro-compatible for later releases
 ## When to use this library? ##
 when your problem can be modeled as an agent that have to choose what action to take to maximise a given problem.
 
+for more information see: https://en.wikipedia.org/wiki/Multi-armed_bandit (yes I cite Wikipedia and no I have no shame.)
+
 ### best used when: ###
 ```
 1- actions to take seem to be mostly random

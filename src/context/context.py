@@ -1,7 +1,8 @@
 from typing import Callable, Iterable
 
 from src.context.base_context import BaseContext
-from src.shared.exceptions import ex, context_exceptions as exceptions
+from shared import ex
+from shared.exceptions import context_exceptions as exceptions
 
 from src.domain.types import bandit_key_type
 

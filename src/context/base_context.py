@@ -2,7 +2,8 @@ from typing import Callable, List
 
 from src.domain import BanditPrecursor, ContextAction, ContextBandit
 from src.model.bandit import Bandit
-from src.shared.exceptions import ex, context_exceptions as exceptions
+from shared import ex
+from shared.exceptions import context_exceptions as exceptions
 from src.domain.types import action_key_type, bandit_key_type
 
 

@@ -1,4 +1,4 @@
-from src.shared.exceptions import BaseException
+from shared.exceptions.base_exception import BaseException
 
 
 class BanditKeyNotInContextException(BaseException):
