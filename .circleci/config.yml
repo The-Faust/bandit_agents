@@ -1,0 +1,30 @@
+version: 2.1
+
+orbs:
+  python: circleci/python@0.2.1
+
+executors:
+  anaconda:
+    docker:
+      - image: continuumio/anaconda3
+
+jobs:
+  build-and-test:
+    executor: anaconda
+
+    steps:
+      - checkout
+      - run:
+          command: conda env create -f bandit_generator.yml
+          name: CreateEnv
+      - run:
+          command: source activate bandit_generator
+          name: ActivateEnv
+      - run:
+          command: python -m unittest tests
+          name: Test
+
+workflows:
+  main:
+    jobs:
+      - build-and-test
