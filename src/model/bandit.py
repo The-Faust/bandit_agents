@@ -53,7 +53,7 @@ class Bandit(BaseBandit, Arguments):
     def decide(
             self, last_action_index=-1,
             target=0.0
-    ) -> (int, any):
+    ) -> (int, action_key_type):
         if count_nonzero(self._actions_counts) > 0:
             self._actions_speculated_rewards = self._update_speculated_rewards_array(
                 last_action_index=last_action_index,
