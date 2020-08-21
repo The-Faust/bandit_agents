@@ -8,9 +8,12 @@ jobs:
     executor: python/default
     steps:
       - checkout
-      - python/load-cache
-      - python/install-deps
-      - python/save-cache
+      - run:
+          command: conda env create -f bandit_generator.yml
+          name: CreateEnv
+      - run:
+          command: conda activate bandit_generator
+          name: ActivateEnv
       - run:
           command: python -m unittest tests
           name: Test
