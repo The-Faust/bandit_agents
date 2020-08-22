@@ -23,7 +23,7 @@ class TestBandit(unittest.TestCase):
         last_action_index = 0
         reward = 0.0
 
-        for _ in range(20000):
+        for _ in range(50000):
             last_action_index, action_key = bandit.decide(last_action_index, reward)
             reward = mockActions[action_key]()
 

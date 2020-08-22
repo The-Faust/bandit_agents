@@ -24,7 +24,23 @@ jobs:
           command: python -m unittest tests
           name: Test
 
+  publish:
+    executor: anaconda
+
+    steps:
+      - run:
+          command: anaconda login --username ${AnacondaUserName} --password ${AnacondaPassword}
+          name: login
+
 workflows:
   main:
     jobs:
       - build-and-test
+      - publish:
+          requires:
+            - build-and-test
+
+          filters:
+            branches:
+              only: develop
+
