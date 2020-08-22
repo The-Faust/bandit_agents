@@ -2,7 +2,7 @@ import unittest
 from numpy import argmax
 
 from tests.mocks import mockActions
-from src.model import Bandit
+from banditMaker.model import Bandit
 
 
 class TestBandit(unittest.TestCase):

@@ -1,10 +1,10 @@
 from typing import Callable, List
 
-from src.domain import BanditPrecursor, ContextAction, ContextBandit
-from src.model.bandit import Bandit
-from shared import ex
-from shared.exceptions import context_exceptions as exceptions
-from src.domain.types import action_key_type, bandit_key_type
+from banditMaker.domain import BanditPrecursor, ContextAction, ContextBandit
+from banditMaker.model.bandit import Bandit
+from banditMaker.shared import ex
+from banditMaker.shared.exceptions import context_exceptions as exceptions
+from banditMaker.domain.types import action_key_type, bandit_key_type
 
 
 class BaseContext(object):

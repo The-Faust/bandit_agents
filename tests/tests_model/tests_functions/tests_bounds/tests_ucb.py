@@ -1,7 +1,7 @@
 import unittest
 
-from src.model.functions.bounds.ucb import _get_upper_bound
-from src.model.functions.bounds.ucb import ucb
+from banditMaker.model.functions.bounds.ucb import _get_upper_bound
+from banditMaker.model.functions.bounds.ucb import ucb
 
 
 class TestsUCB(unittest.TestCase):

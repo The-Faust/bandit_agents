@@ -1,4 +1,4 @@
-from src.model.functions.prediction.step_size import _step_size
+from banditMaker.model.functions.prediction.step_size import _step_size
 
 
 def mean(

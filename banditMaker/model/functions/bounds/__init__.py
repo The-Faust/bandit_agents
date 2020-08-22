@@ -1,5 +1,5 @@
 from typing import Callable, Iterable
-from src.model.functions.bounds.ucb import ucb
+from banditMaker.model.functions.bounds.ucb import ucb
 
 
 def not_bounded(

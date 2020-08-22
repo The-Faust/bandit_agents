@@ -31,6 +31,12 @@ jobs:
       - run:
           command: anaconda login --username ${AnacondaUserName} --password ${AnacondaPassword}
           name: login
+      - run:
+          command: ls -a ../project
+          name: list_all_files
+      - run:
+          command: tar -czvf banditMaker.tar.gz banditMaker
+          name: archive
 
 workflows:
   main:

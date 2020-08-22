@@ -1,4 +1,4 @@
-from shared.exceptions.base_exception import BaseException
+from banditMaker.shared.exceptions.base_exception import BaseException
 
 
 class ActionNotInContextException(BaseException):

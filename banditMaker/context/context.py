@@ -1,10 +1,10 @@
 from typing import Callable, Iterable
 
-from src.context.base_context import BaseContext
-from shared import ex
-from shared.exceptions import context_exceptions as exceptions
+from banditMaker.context.base_context import BaseContext
+from banditMaker.shared import ex
+from banditMaker.shared.exceptions import context_exceptions as exceptions
 
-from src.domain.types import bandit_key_type
+from banditMaker.domain.types import bandit_key_type
 
 
 class Context(BaseContext):

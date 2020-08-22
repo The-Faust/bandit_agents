@@ -5,8 +5,7 @@ As seen when this test is run the model ends up finding out which actions are th
 
 from typing import Callable
 
-
-from src.context import Context
+from banditMaker.context import Context
 from scipy.stats.distributions import gamma
 
 

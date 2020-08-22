@@ -1,6 +1,6 @@
 from numpy import zeros, full, array
 
-from src.domain.types import action_key_type, bandit_key_type
+from banditMaker.domain.types import action_key_type, bandit_key_type
 
 
 # TODO: find a way so that epsilon, confidence and step_size

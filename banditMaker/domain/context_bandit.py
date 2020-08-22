@@ -1,4 +1,4 @@
-from src.model.bandit import Bandit
+from banditMaker.model.bandit import Bandit
 
 
 class ContextBandit(object):

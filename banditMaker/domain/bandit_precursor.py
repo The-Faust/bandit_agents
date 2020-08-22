@@ -1,5 +1,5 @@
 from typing import List
-from src.domain.types import action_key_type, bandit_key_type
+from banditMaker.domain.types import action_key_type, bandit_key_type
 
 
 class BanditPrecursor(object):

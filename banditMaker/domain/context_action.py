@@ -1,7 +1,7 @@
 from typing import Callable, List
 
-from src.domain.types import action_key_type, bandit_key_type
-from src.domain import ContextBandit
+from banditMaker.domain.types import action_key_type, bandit_key_type
+from banditMaker.domain import ContextBandit
 
 
 class ContextAction(object):

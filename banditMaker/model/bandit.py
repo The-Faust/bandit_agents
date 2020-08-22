@@ -1,11 +1,11 @@
 from numpy import count_nonzero, nditer
 
-from src.model.base_bandit import BaseBandit
-from src.model.arguments import Arguments
-from src.model.functions import bound_functions_dict
-from src.model.functions import prediction_functions_dict
-from src.model.functions import decision_functions_dict
-from src.domain.types import action_key_type
+from banditMaker.model.base_bandit import BaseBandit
+from banditMaker.model.arguments import Arguments
+from banditMaker.model.functions import bound_functions_dict
+from banditMaker.model.functions import prediction_functions_dict
+from banditMaker.model.functions import decision_functions_dict
+from banditMaker.domain.types import action_key_type
 
 
 class Bandit(BaseBandit, Arguments):
