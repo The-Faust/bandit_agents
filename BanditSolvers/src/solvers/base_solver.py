@@ -11,6 +11,11 @@ class BaseSolver:
     def fit(self, *args, **kwargs) -> Self:
         pass
 
+    def indexes_to_action_keys(self, indexes: Iterable[int]) -> Tuple[actionKey, ...]:
+        action_keys = tuple(self.action_keys[index] for index in indexes)
+
+        return action_keys
+
     def predict(self, *args, **kwargs) -> int:
         pass
 

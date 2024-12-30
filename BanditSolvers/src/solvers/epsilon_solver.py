@@ -27,4 +27,4 @@ class EpsilonSolver(WeightSolver):
             return super().predict()
         
         else:
-            return random.randint(self.weights.size, size=1)[0]
+            return self._random_action()

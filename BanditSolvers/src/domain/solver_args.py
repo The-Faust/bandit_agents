@@ -6,5 +6,14 @@ class WeightSolverArgs(Enum):
     OPTIMISTIC_VALUE: str = 'optimistic_value'
     STEP_SIZE: str = 'step_size'
 
-class EpsilonSolverArgs(WeightSolverArgs):
+class EpsilonSolverArgs(Enum):
+    ACTION_KEYS: str = 'action_keys'
+    OPTIMISTIC_VALUE: str = 'optimistic_value'
+    STEP_SIZE: str = 'step_size'
     EPSILON: str = 'epsilon'
+
+class UCBSolverArgs(Enum):
+    ACTION_KEYS: str = 'action_keys'
+    OPTIMISTIC_VALUE: str = 'optimistic_value'
+    STEP_SIZE: str = 'step_size'
+    CONFIDENCE: str = 'confidence'

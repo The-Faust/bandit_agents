@@ -1,6 +1,7 @@
 from typing import Dict, Iterable
-from BanditSolvers.src.domain.solver_args import EpsilonSolverArgs, WeightSolverArgs
+from BanditSolvers.src.domain.solver_args import EpsilonSolverArgs, UCBSolverArgs, WeightSolverArgs
 from BanditSolvers.src.solvers.epsilon_solver import EpsilonSolver
+from BanditSolvers.src.solvers.ucb_solver import UCBSolver
 from BanditSolvers.src.solvers.weight_solver import WeightSolver
 from BanditSolvers.src.domain import actionKey
 
@@ -23,6 +24,24 @@ class Solvers:
         epsilon_solver = EpsilonSolver(**es_kwargs)
 
         return epsilon_solver
+    
+    def ucb_solver(
+        self,
+        action_keys: Iterable[actionKey], 
+        optimistic_value: float = None, 
+        step_size: float = None,
+        confidence: float = None
+    ) -> UCBSolver:
+        ucb_kwargs: Dict[str, Iterable[actionKey] | float] = self._make_ucb_solver_kwargs(
+            action_keys=action_keys,
+            optimistic_value=optimistic_value,
+            step_size=step_size,
+            confidence=confidence
+        )
+
+        ucb_solver = UCBSolver(**ucb_kwargs)
+
+        return ucb_solver
 
     def weight_solver(
         self,
@@ -57,6 +76,24 @@ class Solvers:
             es_kwargs[EpsilonSolverArgs.EPSILON.value] = epsilon
 
         return es_kwargs
+    
+    def _make_ucb_solver_kwargs(
+        self, 
+        action_keys: Iterable[actionKey], 
+        optimistic_value: float = None, 
+        step_size: float = None,
+        confidence: float = None   
+    ) -> Dict[str, Iterable[actionKey] | float]:
+        ucb_kwargs: Dict[str, Iterable[actionKey] | float] = self._make_weight_solver_kwargs(
+            action_keys=action_keys,
+            optimistic_value=optimistic_value,
+            step_size=step_size
+        )
+
+        if confidence is not None:
+            ucb_kwargs[UCBSolverArgs.CONFIDENCE.value] = confidence
+
+        return ucb_kwargs
 
     def _make_weight_solver_kwargs(
         self,
@@ -75,4 +112,8 @@ class Solvers:
             ws_kwargs[WeightSolverArgs.STEP_SIZE.value] = step_size
 
         return ws_kwargs
+    
+    
+
+
 
