@@ -1,16 +1,18 @@
-from typing import Any, Callable
+from typing import Any, Callable, Tuple
 
 from numpy import ndarray
 from BanditSolvers.src.contexts.simulation_context import SimulationContext
 from BanditSolvers.src.solvers import Solvers
 from scipy.stats import gamma
 
+from BanditSolvers.src.solvers import EpsilonSolver
+
 
 def epsilon_solver_example() -> ndarray[float, Any]:
     # First we need some actions (any function that returns a float)
     # For our situation here we will mock the actions by using some gamma distributions
-    action_a: Callable[[], float] = lambda: gamma.rvs(a=0.5, loc=0., scale=1., size=1)[0]
-    action_b: Callable[[], float] = lambda: gamma.rvs(a=0.1, loc=0., scale=1., size=1)[0]
+    action_a: Callable[[], float] = lambda: gamma.rvs(a=6.8, scale=0.1, loc=0, size=1)[0]
+    action_b: Callable[[], float] = lambda: gamma.rvs(a=2.2, scale=0.2, loc=0, size=1)[0]
 
     action_keys: Tuple[str, str] = ('action_a', 'action_b')
     print(action_keys)
@@ -19,10 +21,10 @@ def epsilon_solver_example() -> ndarray[float, Any]:
     # as the name of the function suggest this solver is an epsilon solver, 
     # meaning it will use basic weighted function to make its decision 
     # except if the epsilon value is triggered, in which case, it will do a random action
-    epsilon_solver = (
+    epsilon_solver: EpsilonSolver = (
         Solvers().epsilon_solver(
             action_keys=action_keys, 
-            optimistic_value=1., 
+            optimistic_value=5., 
             step_size=1e-2,
             epsilon=1e-2
         )

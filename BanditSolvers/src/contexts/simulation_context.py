@@ -1,6 +1,6 @@
 import logging
 from typing import Any, Callable, Dict, Iterable, Never, Self, Tuple, Type
-from numpy import array, dtype, empty, float64, int64, ndarray
+from numpy import arange, array, dtype, empty, float64, int64, ndarray
 from scipy.stats import gamma
 from BanditSolvers.src.domain import actionKey
 from BanditSolvers.src.domain.context_action_args import MakeGammaActionArgs
@@ -107,7 +107,8 @@ class SimulationContext:
         steps_by_ticks: int = 1,
         act_args_func: Callable[[actionKey], Tuple[any, ...]] = None,
         as_dict: bool = False
-    ) -> Tuple[ndarray[int64], ndarray[str], ndarray[float64]] | Dict[str, ndarray]:
+    ) -> Tuple[ndarray[int64], ndarray[int64], ndarray[str], ndarray[float64]] | Dict[str, ndarray]:
+        steps = arange(0, n_steps)
         indexes: ndarray[int64] = empty(n_steps, dtype=int64)
         action_keys: ndarray[str] = empty(n_steps, dtype='<U100')
         targets: ndarray[float64] = empty(n_steps)
@@ -168,13 +169,14 @@ class SimulationContext:
 
         if as_dict:
             results: Dict[str, ndarray] = {
+                'steps': steps,
                 'action_indexes': indexes,
                 'action_keys': action_keys,
                 'targets': targets
             }
 
         else:
-            results = (indexes, action_keys, targets)
+            results = (steps, indexes, action_keys, targets)
 
         self.logger.debug(f'The results are {results}')
 

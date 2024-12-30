@@ -3,12 +3,13 @@ from numpy import ndarray
 from scipy.stats import gamma
 
 from BanditSolvers import Solvers, SimulationContext
+from BanditSolvers.src.solvers import WeightSolver
 
 def weight_solver_example() -> ndarray[float]:
     # First we need some actions (any function that returns a float)
     # For our situation here we will mock the actions by using some gamma distributions
-    action_a: Callable[[], float] = lambda: gamma.rvs(a=0.5, loc=0., scale=1., size=1)[0]
-    action_b: Callable[[], float] = lambda: gamma.rvs(a=0.1, loc=0., scale=1., size=1)[0]
+    action_a: Callable[[], float] = lambda: gamma.rvs(a=6.8, scale=0.1, loc=0, size=1)[0]
+    action_b: Callable[[], float] = lambda: gamma.rvs(a=2.2, scale=0.2, loc=0, size=1)[0]
 
     action_keys: Tuple[str, str] = ('action_a', 'action_b')
     print(action_keys)
@@ -16,10 +17,10 @@ def weight_solver_example() -> ndarray[float]:
     # We now instanciate the solver
     # as the name of the function suggest this solver is a weight solver, 
     # meaning it only uses the basic weighted function to make its decisions
-    weight_solver = (
+    weight_solver: WeightSolver = (
         Solvers().weight_solver(
             action_keys=action_keys, 
-            optimistic_value=1., 
+            optimistic_value=5., 
             step_size=1e-2
         )
     )
