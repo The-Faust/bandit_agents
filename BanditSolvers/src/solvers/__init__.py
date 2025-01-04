@@ -1,6 +1,7 @@
 from typing import Dict, Iterable
-from BanditSolvers.src.domain.solver_args import EpsilonSolverArgs, UCBSolverArgs, WeightSolverArgs
+from BanditSolvers.src.domain.solver_args import EpsilonSolverArgs, SamplingSolverArgs, UCBSolverArgs, WeightSolverArgs
 from BanditSolvers.src.solvers.epsilon_solver import EpsilonSolver
+from BanditSolvers.src.solvers.sampling_solver import SamplingSolver
 from BanditSolvers.src.solvers.ucb_solver import UCBSolver
 from BanditSolvers.src.solvers.weight_solver import WeightSolver
 from BanditSolvers.src.domain import actionKey
@@ -24,6 +25,22 @@ class Solvers:
         epsilon_solver = EpsilonSolver(**es_kwargs)
 
         return epsilon_solver
+    
+    def sampling_solver(
+        self,
+        action_keys: Iterable[actionKey],
+        n_sampling: int = None,
+        max_sample_size: int = None
+    ) -> SamplingSolver:
+        sampling_kwargs: Dict[str, Iterable[actionKey]| float | int] = self._make_sampling_solver_kwargs(
+            action_keys=action_keys,
+            n_sampling=n_sampling,
+            max_sample_size=max_sample_size
+        )
+
+        sampling_solver = SamplingSolver(**sampling_kwargs)
+
+        return sampling_solver
     
     def ucb_solver(
         self,
@@ -76,6 +93,22 @@ class Solvers:
             es_kwargs[EpsilonSolverArgs.EPSILON.value] = epsilon
 
         return es_kwargs
+    
+    def _make_sampling_solver_kwargs(
+        self,
+        action_keys: Iterable[actionKey],
+        n_sampling: int = None,
+        max_sample_size: int = None
+    ) -> Dict[str, Iterable[actionKey] | float]:
+        sampling_kwargs = dict(action_keys=action_keys)
+
+        if n_sampling is not None:
+            sampling_kwargs[SamplingSolverArgs.N_SAMPLING.value] = n_sampling
+
+        if max_sample_size is not None:
+            sampling_kwargs[SamplingSolverArgs.MAX_SAMPLE_SIZE.value] = max_sample_size
+
+        return sampling_kwargs
     
     def _make_ucb_solver_kwargs(
         self, 

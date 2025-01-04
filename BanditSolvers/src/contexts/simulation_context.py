@@ -121,7 +121,7 @@ class SimulationContext:
             action_index: int = solver.predict()
             indexes[i] = action_index
 
-            if i % steps_by_ticks == 0 or i == n_steps - 1:
+            if (i % steps_by_ticks == 0 or i == n_steps - 1) and i != 0:
                 self.logger.debug(f'step {i} is a training step')
 
                 difference =  (i - last_training_index) if i == n_steps - 1 else steps_by_ticks
