@@ -21,6 +21,17 @@ class SamplingSolver(BaseSolver):
             n_sampling: int = 1,
             max_sample_size: int = 1000
         ) -> None:
+        """_summary_
+
+        Parameters
+        ----------
+        action_keys : Iterable[actionKey]
+            _description_
+        n_sampling : int, optional
+            _description_, by default 1
+        max_sample_size : int, optional
+            _description_, by default 1000
+        """
         self.logger: logging.Logger = logging.getLogger(__name__)
 
         super().__init__(action_keys=action_keys)
@@ -34,6 +45,20 @@ class SamplingSolver(BaseSolver):
         
 
     def fit(self, x: ndarray[int], y: ndarray[float]) -> Self:
+        """_summary_
+
+        Parameters
+        ----------
+        x : ndarray[int]
+            _description_
+        y : ndarray[float]
+            _description_
+
+        Returns
+        -------
+        Self
+            _description_
+        """
         assert x.size == y.size
 
         total_action_count: int = sum(self.action_counts)
@@ -67,6 +92,13 @@ class SamplingSolver(BaseSolver):
             
 
     def predict(self) -> int:
+        """_summary_
+
+        Returns
+        -------
+        int
+            _description_
+        """
         def sample_distribution(
             alpha: float,
             loc: float,
@@ -89,6 +121,22 @@ class SamplingSolver(BaseSolver):
         return samples.argmax()
 
     def _sample_distribution(self, alpha, loc, scale) -> float:
+        """_summary_
+
+        Parameters
+        ----------
+        alpha : _type_
+            _description_
+        loc : _type_
+            _description_
+        scale : _type_
+            _description_
+
+        Returns
+        -------
+        float
+            _description_
+        """
         samples: ndarray[float64] = gamma.rvs(
             a=alpha, 
             loc=loc, 
@@ -102,6 +150,18 @@ class SamplingSolver(BaseSolver):
 
     @staticmethod
     def _fit_gamma_on_targets(targets: ndarray[float64]) -> ndarray[float64]:
+        """_summary_
+
+        Parameters
+        ----------
+        targets : ndarray[float64]
+            _description_
+
+        Returns
+        -------
+        ndarray[float64]
+            _description_
+        """
         if targets.var() > 0:
             shape, loc, scale = gamma.fit(targets)
 

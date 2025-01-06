@@ -19,6 +19,19 @@ class UCBSolver(WeightSolver):
         step_size = 1., 
         confidence: float = 1.
     ) -> None:
+        """_summary_
+
+        Parameters
+        ----------
+        action_keys : Iterable[actionKey]
+            _description_
+        optimistic_value : _type_, optional
+            _description_, by default 0.
+        step_size : _type_, optional
+            _description_, by default 1.
+        confidence : float, optional
+            _description_, by default 1.
+        """
         super().__init__(
             action_keys=action_keys, 
             optimistic_value=optimistic_value, 
@@ -30,6 +43,20 @@ class UCBSolver(WeightSolver):
         self.total_action_count = 0
         
     def _step(self, target: float, action_index: int) -> bool:
+        """_summary_
+
+        Parameters
+        ----------
+        target : float
+            _description_
+        action_index : int
+            _description_
+
+        Returns
+        -------
+        bool
+            _description_
+        """
         targets: ndarray[float64] = full(len(self.action_keys), -inf)
         targets[action_index] = target
 
@@ -67,6 +94,28 @@ class UCBSolver(WeightSolver):
         total_action_count: int,
         target: float = None
     ) -> float:
+        """_summary_
+
+        Parameters
+        ----------
+        weight : float
+            _description_
+        step_size_value : float
+            _description_
+        confidence : float
+            _description_
+        action_count : int
+            _description_
+        total_action_count : int
+            _description_
+        target : float, optional
+            _description_, by default None
+
+        Returns
+        -------
+        float
+            _description_
+        """
         if target > -inf and target < inf:
             new_weight: float = WeightSolver._compute_weight(
                 weight=weight,

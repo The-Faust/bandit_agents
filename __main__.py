@@ -3,7 +3,7 @@ import logging
 from Examples.basic_examples import run_basic_examples
 
 logger: logging.Logger = logging.getLogger()
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
 
 formater = logging.Formatter('%(asctime)s %(levelname)-8s %(message)s')
 

@@ -9,6 +9,18 @@ from BanditSolvers.src.solvers.base_solver import BaseSolver
 
 class SimulationContextActionFactory:
     def make_gamma_action_from_data(self, y: ndarray[float]) -> Callable[[], float]:
+        """_summary_
+
+        Parameters
+        ----------
+        y : ndarray[float]
+            _description_
+
+        Returns
+        -------
+        Callable[[], float]
+            _description_
+        """
         shape, loc, scale= gamma.fit(y)
 
         f: Callable[[], float] = self.make_gamma_action(alpha=shape, loc=loc, scale=scale)
@@ -21,6 +33,22 @@ class SimulationContextActionFactory:
         loc: float = None, 
         scale: float = None, 
     ) -> Callable[[], float]:
+        """_summary_
+
+        Parameters
+        ----------
+        alpha : float
+            _description_
+        loc : float, optional
+            _description_, by default None
+        scale : float, optional
+            _description_, by default None
+
+        Returns
+        -------
+        Callable[[], float]
+            _description_
+        """
         g_kwargs = dict(a=alpha)
 
         if loc is not None:
@@ -48,6 +76,13 @@ class SimulationContext:
         self, 
         actions: Iterable[Tuple[actionKey, Callable[[any], float] | Tuple[float, ...] | ndarray[float]]]
     ) -> None:
+        """_summary_
+
+        Parameters
+        ----------
+        actions : Iterable[Tuple[actionKey, Callable[[any], float]  |  Tuple[float, ...]  |  ndarray[float]]]
+            _description_
+        """
         self.logger: logging.Logger = logging.getLogger(__name__)
 
         self.simulation_context_action_factory = SimulationContextActionFactory()
@@ -69,6 +104,22 @@ class SimulationContext:
         action_data: Callable[[any], float] | Tuple[float, ...] | ndarray[float], 
         is_return: bool = True
     ) -> Self | None:
+        """_summary_
+
+        Parameters
+        ----------
+        action_key : actionKey
+            _description_
+        action_data : Callable[[any], float] | Tuple[float, ...] | ndarray[float]
+            _description_
+        is_return : bool, optional
+            _description_, by default True
+
+        Returns
+        -------
+        Self | None
+            _description_
+        """
         if callable(action_data):
             action_func: Callable[[any], float] = action_data
             
@@ -97,6 +148,18 @@ class SimulationContext:
         self, 
         actions: Iterable[Tuple[actionKey, Callable[[any], float] | Tuple[float, ...] | ndarray[float]]]
     ) -> Self:
+        """_summary_
+
+        Parameters
+        ----------
+        actions : Iterable[Tuple[actionKey, Callable[[any], float]  |  Tuple[float, ...]  |  ndarray[float]]]
+            _description_
+
+        Returns
+        -------
+        Self
+            _description_
+        """
         for action_key, action_func in actions:
             self.add_action(action_key, action_func, False) 
 
@@ -110,6 +173,26 @@ class SimulationContext:
         act_args_func: Callable[[actionKey], Tuple[any, ...]] = None,
         as_dict: bool = False
     ) -> Tuple[ndarray[int64], ndarray[int64], ndarray[str], ndarray[float64]] | Dict[str, ndarray]:
+        """_summary_
+
+        Parameters
+        ----------
+        n_steps : int
+            _description_
+        solver : Type[
+            _description_
+        steps_by_ticks : int, optional
+            _description_, by default 1
+        act_args_func : Callable[[actionKey], Tuple[any, ...]], optional
+            _description_, by default None
+        as_dict : bool, optional
+            _description_, by default False
+
+        Returns
+        -------
+        Tuple[ndarray[int64], ndarray[int64], ndarray[str], ndarray[float64]] | Dict[str, ndarray]
+            _description_
+        """
         steps: ndarray[int64] = arange(0, n_steps)
         indexes: ndarray[int64] = empty(n_steps, dtype=int64)
         action_keys: ndarray[str] = empty(n_steps, dtype='<U100')
@@ -185,6 +268,18 @@ class SimulationContext:
         return results
 
     def act(self, action_key: actionKey, *args, **kwargs) -> float:
+        """_summary_
+
+        Parameters
+        ----------
+        action_key : actionKey
+            _description_
+
+        Returns
+        -------
+        float
+            _description_
+        """
         target: float = self.action_dict[action_key](*args, **kwargs)
 
         return target
