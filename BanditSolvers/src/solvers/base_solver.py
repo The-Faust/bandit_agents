@@ -20,7 +20,7 @@ class BaseSolver:
 
         return action_keys
 
-    def predict(self, *args, **kwargs) -> int:
+    def predict(self) -> int:
         pass
 
     def _step(self, *args, **kwargs) -> Generator[bool, any, None]:

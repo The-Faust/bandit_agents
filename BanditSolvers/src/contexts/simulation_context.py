@@ -41,17 +41,17 @@ class SimulationContextActionFactory:
 
 
 class SimulationContext:
-    simulated_action_dict: Dict[actionKey, Callable[[any], float]]
+    action_dict: Dict[actionKey, Callable[[any], float]]
     simulation_context_action_factory: SimulationContextActionFactory
         
     def __init__(
         self, 
         actions: Iterable[Tuple[actionKey, Callable[[any], float] | Tuple[float, ...] | ndarray[float]]]
     ) -> None:
-        self.logger = logging.getLogger(__name__)
+        self.logger: logging.Logger = logging.getLogger(__name__)
 
         self.simulation_context_action_factory = SimulationContextActionFactory()
-        self.simulated_action_dict = dict()
+        self.action_dict = dict()
 
         self.add_actions(actions)
 
@@ -59,6 +59,8 @@ class SimulationContext:
         return self
     
     def __exit__(self, exc_type, exc_value, traceback) -> None:
+        self.logger.debug(traceback)
+
         return
 
     def add_action(
@@ -84,7 +86,7 @@ class SimulationContext:
                 .make_gamma_action_from_data(action_data)
             )
 
-        self.simulated_action_dict[action_key] = action_func
+        self.action_dict[action_key] = action_func
 
         if is_return:
                 return self
@@ -108,7 +110,7 @@ class SimulationContext:
         act_args_func: Callable[[actionKey], Tuple[any, ...]] = None,
         as_dict: bool = False
     ) -> Tuple[ndarray[int64], ndarray[int64], ndarray[str], ndarray[float64]] | Dict[str, ndarray]:
-        steps = arange(0, n_steps)
+        steps: ndarray[int64] = arange(0, n_steps)
         indexes: ndarray[int64] = empty(n_steps, dtype=int64)
         action_keys: ndarray[str] = empty(n_steps, dtype='<U100')
         targets: ndarray[float64] = empty(n_steps)
@@ -124,9 +126,9 @@ class SimulationContext:
             if (i % steps_by_ticks == 0 or i == n_steps - 1) and i != 0:
                 self.logger.debug(f'step {i} is a training step')
 
-                difference =  (i - last_training_index) if i == n_steps - 1 else steps_by_ticks
-                start_index = i - difference
-                end_index = i + 1 if i == n_steps - 1 else i
+                difference: int =  (i - last_training_index) if i == n_steps - 1 else steps_by_ticks
+                start_index: int = i - difference
+                end_index: int = i + 1 if i == n_steps - 1 else i
 
                 self.logger.debug(f'training on targets indexes: {start_index} to {end_index}')
 
@@ -183,6 +185,6 @@ class SimulationContext:
         return results
 
     def act(self, action_key: actionKey, *args, **kwargs) -> float:
-        target: float = self.simulated_action_dict[action_key](*args, **kwargs)
+        target: float = self.action_dict[action_key](*args, **kwargs)
 
         return target
