@@ -1,6 +1,8 @@
+import argparse
 import logging
 
-from Examples.basic_examples import run_basic_examples
+from Exemples.agents_exemples import run_agents_exemples
+from Exemples.basic_exemples import run_basic_examples
 
 logger: logging.Logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
@@ -13,7 +15,23 @@ console_handler.setFormatter(formater)
 logger.addHandler(console_handler)
 
 
+parser = argparse.ArgumentParser()
+
+parser.add_argument(
+    '-e', '--exemple'
+)
+
+args: argparse.Namespace = parser.parse_args()
+
+
 if __name__ == '__main__':
     examples_logger: logging.Logger = logging.getLogger(__name__)
 
-    examples_logger.debug(run_basic_examples().head(100))
+    if args.exemple == 'basic':
+        print(run_basic_examples().head(100))
+
+    elif args.exemple == 'agents':
+        run_agents_exemples()
+
+    else:
+        print('please select an exemple to run')

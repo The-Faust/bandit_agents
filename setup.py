@@ -11,7 +11,7 @@ with open('BanditSolvers/requirements.txt') as f:
 
 setup(
     name='Bandit Problem Solvers',
-    version='0.0.1',
+    version='0.5.0',
     author='Vincent Martel',
     author_email='vincent.martel.11235@gmail.com',
     description='Library to solve k-armed bandit problems',
