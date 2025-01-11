@@ -11,7 +11,7 @@ jobs:
     if: github.event.pull_request.merged == true
     runs-on: debian-12.8
     permissions:
-      content: write
+      contents: write
     steps:
       - uses: actions/checkout@v3
         with:
