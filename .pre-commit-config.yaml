@@ -1,0 +1,38 @@
+repos:
+  - repo: https://github.com/psf/black
+    rev: 24.8.0
+    hooks:
+      - id: black
+        args: [ --skip-string-normalization, --skip-magic-trailing-comma ]
+        language_version: python3
+  - repo: https://github.com/PyCQA/autoflake
+    rev: v2.3.1
+    hooks:
+      - id: autoflake
+        args: [ --remove-all-unused-imports, --in-place ]
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v1.2.3
+    hooks:
+      - id: flake8
+  - repo: local
+    hooks:
+      - id: check_env_exists
+        name: check if bandit_agents_dev_env.yml exists
+        entry: echo -e bandit_agents_dev_env.yml
+        language: system
+      - id: check_env_lock_exists
+        name: check that bandit-agents-dev-env-64.lock file exists
+        entry: echo -e bandit-agents-dev-env-64.lock
+        language: system
+      - id: detect_env_changes
+        name: bandit_agents_dev_env.yml changed, check if env.lock was recompiled
+        entry: git diff --exit-code bandit-agents-dev-env-64.lock
+        language: system
+        files: bandit_agents_dev_env.yml
+      - id: run unit tests
+        name: unit tests running if code change
+        entry: conda run -n bandit_agents_dev_env python3 -m unittest discover
+        language: system
+        'types': [python]
+        pass_filenames: false
+        stages: [commit]
