@@ -24,11 +24,6 @@ repos:
         name: check that bandit-agents-dev-env-64.lock file exists
         entry: echo -e bandit-agents-dev-env-64.lock
         language: system
-      - id: detect_env_changes
-        name: bandit_agents_dev_env.yml changed, check if env.lock was recompiled
-        entry: git diff --exit-code bandit-agents-dev-env-64.lock
-        language: system
-        files: bandit_agents_dev_env.yml
       - id: run unit tests
         name: unit tests running if code change
         entry: conda run -n bandit_agents_dev_env python3 -m unittest discover

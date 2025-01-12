@@ -9,9 +9,4 @@ fi
 
 ./build_env.sh
 
-commit_code=git diff --exit-code .pre-commit-config.yaml
-
-if [ $commit_code ] || [ $1 ];
-then
-  conda run -n bandit_agents_env pre-commit install
-fi
+conda run -n bandit_agents_dev_env pre-commit install
