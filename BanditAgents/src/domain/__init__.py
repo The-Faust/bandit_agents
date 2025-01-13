@@ -1,3 +1,3 @@
 from typing import TypeVar
 
-actionKey = TypeVar('actionKey', str, int)
+actionKey = TypeVar("actionKey", str, int)

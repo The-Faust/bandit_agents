@@ -8,11 +8,11 @@ class EpsilonSolver(WeightSolver):
     epsilon: float
 
     def __init__(
-        self, 
-        action_keys: Iterable[actionKey], 
-        optimistic_value: float = 0., 
-        step_size: float = 1., 
-        epsilon: float = 1e-10
+        self,
+        action_keys: Iterable[actionKey],
+        optimistic_value: float = 0.0,
+        step_size: float = 1.0,
+        epsilon: float = 1e-10,
     ) -> None:
         """_summary_
 
@@ -28,9 +28,9 @@ class EpsilonSolver(WeightSolver):
             _description_, by default 1e-10
         """
         super().__init__(
-            action_keys=action_keys, 
-            optimistic_value=optimistic_value, 
-            step_size=step_size
+            action_keys=action_keys,
+            optimistic_value=optimistic_value,
+            step_size=step_size,
         )
 
         self.epsilon = epsilon
@@ -45,6 +45,6 @@ class EpsilonSolver(WeightSolver):
         """
         if random.random(1)[0] > self.epsilon:
             return super().predict()
-        
+
         else:
             return self._random_action()

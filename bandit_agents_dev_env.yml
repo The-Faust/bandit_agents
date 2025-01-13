@@ -1,0 +1,14 @@
+name: bandit_agents_dev_env
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - pip
+  - pre-commit
+  - python
+  - scipy
+  - pandas
+  - black
+
+platforms:
+  - linux-64

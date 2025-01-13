@@ -15,8 +15,8 @@ class WeightSolver(BaseSolver):
     def __init__(
         self,
         action_keys: Iterable[actionKey],
-        optimistic_value: float = 0.,
-        step_size: float = 1.
+        optimistic_value: float = 0.0,
+        step_size: float = 1.0,
     ) -> None:
         """_summary_
 
@@ -39,7 +39,9 @@ class WeightSolver(BaseSolver):
 
         self._init_weights()
 
-    def action_keys_to_indexes(self, action_keys: Iterable[actionKey]) -> ndarray[int]:
+    def action_keys_to_indexes(
+        self, action_keys: Iterable[actionKey]
+    ) -> ndarray[int]:
         """_summary_
 
         Parameters
@@ -53,13 +55,14 @@ class WeightSolver(BaseSolver):
             _description_
         """
         action_keys_index_dict: Dict[actionKey, int] = {
-            action_key: i for i, action_key 
-            in enumerate(self.action_keys)
+            action_key: i for i, action_key in enumerate(self.action_keys)
         }
 
         action_keys_indexes: ndarray[int] = array(
-            int(action_keys_index_dict[action_key]) 
-            for action_key in action_keys
+            [
+                int(action_keys_index_dict[action_key])
+                for action_key in action_keys
+            ]
         )
 
         return action_keys_indexes
@@ -86,10 +89,10 @@ class WeightSolver(BaseSolver):
                 self.is_trained = True
 
             return self
-        
+
         else:
             return self
-        
+
     def predict(self) -> int:
         """_summary_
 
@@ -100,13 +103,12 @@ class WeightSolver(BaseSolver):
         """
         if self.is_trained:
             return self.weights.argmax()
-        
+
         else:
             return self._random_action()
 
     def _init_weights(self) -> None:
-        """_summary_
-        """
+        """_summary_"""
         self.weights = array([self.optimistic_value for _ in self.action_keys])
 
     def _steps(self, x, y) -> Generator[bool, Any, None]:
@@ -126,7 +128,7 @@ class WeightSolver(BaseSolver):
         """
         for action_index, target in zip(x, y):
             yield self._step(target=target, action_index=action_index)
-    
+
     def _step(self, target: float, action_index: int) -> bool:
         """_summary_
 
@@ -143,13 +145,13 @@ class WeightSolver(BaseSolver):
             _description_
         """
         self.weights[action_index] = self._compute_weight(
-                weight=self.weights[action_index], 
-                target=target, 
-                step_size_value=self.step_size
-            )
+            weight=self.weights[action_index],
+            target=target,
+            step_size_value=self.step_size,
+        )
 
         return True
-    
+
     def _random_action(self) -> int:
         """_summary_
 
@@ -161,7 +163,9 @@ class WeightSolver(BaseSolver):
         return random.randint(self.weights.size, size=1)[0]
 
     @staticmethod
-    def _compute_weight(weight: float, target: float, step_size_value: float) -> float:
+    def _compute_weight(
+        weight: float, target: float, step_size_value: float
+    ) -> float:
         """_summary_
 
         Parameters
