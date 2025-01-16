@@ -1,4 +1,4 @@
-from typing import Iterable, Self, Tuple
+from typing import Iterable, Self
 
 from BanditAgents.src.domain import actionKey
 from BanditAgents.src.solvers.base_solver import BaseSolver
@@ -6,7 +6,6 @@ from BanditAgents.src.solvers.base_solver import BaseSolver
 
 class BaseSolverBuilder:
     action_keys: Iterable[actionKey] = None
-        
 
     def with_action_keys(self, action_keys: Iterable[actionKey]) -> Self:
         self.action_keys = action_keys
@@ -14,7 +13,7 @@ class BaseSolverBuilder:
         return self
 
     def with_default_action_keys(self) -> Self:
-        self.action_keys = ('action_a', 'action_b')
+        self.action_keys = ("action_a", "action_b")
 
         return self
 

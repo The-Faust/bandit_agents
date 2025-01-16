@@ -3,7 +3,7 @@ repos:
     rev: 24.8.0
     hooks:
       - id: black
-        args: [ --skip-string-normalization, --skip-magic-trailing-comma ]
+        args: [ --skip-string-normalization, --skip-magic-trailing-comma, --line-length=79 ]
         language_version: python3
   - repo: https://github.com/PyCQA/autoflake
     rev: v2.3.1
@@ -30,4 +30,4 @@ repos:
         language: system
         'types': [python]
         pass_filenames: false
-        stages: [commit]
+        stages: [pre-commit]

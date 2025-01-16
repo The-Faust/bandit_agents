@@ -1,7 +1,18 @@
 import logging
 from typing import Dict, Iterable, Self
 
-from numpy import array, float64, ndarray, int64, ones, vectorize, zeros, full, nan, isnan
+from numpy import (
+    array,
+    float64,
+    ndarray,
+    int64,
+    ones,
+    vectorize,
+    zeros,
+    full,
+    nan,
+    isnan,
+)
 from BanditAgents.src.solvers.base_solver import BaseSolver
 from BanditAgents.src.domain import actionKey
 from scipy.stats import gamma
@@ -16,11 +27,11 @@ class SamplingSolver(BaseSolver):
     targets: ndarray[float64]
 
     def __init__(
-            self, 
-            action_keys: Iterable[actionKey], 
-            n_sampling: int = 1,
-            max_sample_size: int = 1000
-        ) -> None:
+        self,
+        action_keys: Iterable[actionKey],
+        n_sampling: int = 1,
+        max_sample_size: int = 1000,
+    ) -> None:
         """_summary_
 
         Parameters
@@ -42,7 +53,6 @@ class SamplingSolver(BaseSolver):
         self.max_sample_reached = zeros(len(self.action_keys))
         self.n_sampling = n_sampling
         self.targets = full((self.max_sample_size, len(self.action_keys)), nan)
-        
 
     def fit(self, x: ndarray[int], y: ndarray[float]) -> Self:
         """_summary_
@@ -59,11 +69,13 @@ class SamplingSolver(BaseSolver):
         Self
             _description_
         """
-        self.logger.debug('fitting sample solver')
+        self.logger.debug("fitting sample solver")
         assert x.size == y.size
 
         for action_index, target in zip(x, y):
-            self.targets[int(self.action_counts[action_index]), action_index] = target
+            self.targets[
+                int(self.action_counts[action_index]), action_index
+            ] = target
 
             if self.action_counts[action_index] < self.max_sample_size:
                 self.action_counts[action_index] += 1
@@ -77,13 +89,12 @@ class SamplingSolver(BaseSolver):
             self.weights[:, i] = self._fit_gamma_on_targets(self.targets[:, i])
 
         return self
-    
+
     def info(self) -> Dict[str, any]:
         info = super().info()
-        info['targets'] = self.targets
+        info["targets"] = self.targets
 
         return info
-            
 
     def predict(self) -> int:
         """_summary_
@@ -93,23 +104,20 @@ class SamplingSolver(BaseSolver):
         int
             _description_
         """
+
         def sample_distribution(
-            alpha: float,
-            loc: float,
-            scale: float
+            alpha: float, loc: float, scale: float
         ) -> float:
             mean_sample: float = self._sample_distribution(
-                alpha=alpha, 
-                loc=loc, 
-                scale=scale
+                alpha=alpha, loc=loc, scale=scale
             )
 
             return mean_sample
 
         vec_sample_distribution = vectorize(sample_distribution)
 
-        samples: ndarray[float64] = (
-            vec_sample_distribution(self.weights[0, :], self.weights[1, :], self.weights[2, :])
+        samples: ndarray[float64] = vec_sample_distribution(
+            self.weights[0, :], self.weights[1, :], self.weights[2, :]
         )
 
         return samples.argmax()
@@ -132,17 +140,16 @@ class SamplingSolver(BaseSolver):
             _description_
         """
         samples: ndarray[float64] = gamma.rvs(
-            a=alpha, 
-            loc=loc, 
-            scale=scale, 
-            size=self.n_sampling
+            a=alpha, loc=loc, scale=scale, size=self.n_sampling
         )
 
         mean_sample: float = sum(samples) / self.n_sampling
 
         return mean_sample
 
-    def _fit_gamma_on_targets(self, targets: ndarray[float64]) -> ndarray[float64]:
+    def _fit_gamma_on_targets(
+        self, targets: ndarray[float64]
+    ) -> ndarray[float64]:
         """_summary_
 
         Parameters

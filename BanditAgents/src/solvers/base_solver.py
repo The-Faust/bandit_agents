@@ -1,4 +1,4 @@
-from typing import Generator, Iterable, Self, Tuple
+from typing import Dict, Generator, Iterable, Self, Tuple
 
 from numpy import float64, ndarray, zeros
 from BanditAgents.src.domain import actionKey
@@ -9,10 +9,8 @@ class BaseSolver:
     weights: ndarray[float64]
 
     def __init__(
-            self, 
-            action_keys: Iterable[actionKey], 
-            *args, **kwargs
-        ) -> None:
+        self, action_keys: Iterable[actionKey], *args, **kwargs
+    ) -> None:
         """_summary_
 
         Parameters
@@ -22,7 +20,7 @@ class BaseSolver:
         """
         self.action_keys = tuple(ac for ac in action_keys)
         self.weights = zeros(len(self.action_keys))
-        
+
     def fit(self, *args, **kwargs) -> Self:
         """_summary_
 
@@ -31,9 +29,10 @@ class BaseSolver:
         Self
             _description_
         """
-        pass
 
-    def indexes_to_action_keys(self, indexes: Iterable[int]) -> Tuple[actionKey, ...]:
+    def indexes_to_action_keys(
+        self, indexes: Iterable[int]
+    ) -> Tuple[actionKey, ...]:
         """_summary_
 
         Parameters
@@ -50,6 +49,11 @@ class BaseSolver:
 
         return action_keys
 
+    def info(self) -> Dict[str, any]:
+        solver_info = dict(action_keys=self.action_keys, weights=self.weights)
+
+        return solver_info
+
     def predict(self) -> int:
         """_summary_
 
@@ -58,15 +62,6 @@ class BaseSolver:
         int
             _description_
         """
-        pass
-
-    def info(self):
-        solver_info = dict(
-            action_keys=self.action_keys,
-            weights=self.weights
-        )
-
-        return solver_info
 
     def _step(self, *args, **kwargs) -> Generator[bool, any, None]:
         """_summary_
@@ -76,4 +71,3 @@ class BaseSolver:
         Generator[bool, any, None]
             _description_
         """
-        pass
