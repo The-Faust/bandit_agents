@@ -47,13 +47,18 @@ def mock__random_action() -> int:
 
 
 class TestWeightSolver(unittest.TestCase):
+    mock_action_keys: List[actionKey]
+    mock_optimistic_value: float
+    mock_step_size: float
+    weight_solver: WeightSolver
+
     @patch(BASE_SOLVER_PATH, side_effect=make_mock_base_solver)
     def setUp(self, mock_base_solver) -> None:
-        self.mock_action_keys: List[actionKey] = ["action_a", "action_b"]
-        self.mock_optimistic_value: float = 1.0
-        self.mock_step_size: float = 1.0
+        self.mock_action_keys = ["action_a", "action_b"]
+        self.mock_optimistic_value = 1.0
+        self.mock_step_size = 1.0
 
-        self.weight_solver: WeightSolver = WeightSolver(
+        self.weight_solver = WeightSolver(
             action_keys=self.mock_action_keys,
             optimistic_value=self.mock_optimistic_value,
             step_size=self.mock_step_size,
@@ -131,7 +136,7 @@ class TestWeightSolver(unittest.TestCase):
     def test__step_succeed(self, _compute_weight) -> None:
         self.weight_solver._compute_weight = _compute_weight
 
-        is_success = self.weight_solver._step(1.0, 0)
+        is_success: bool = self.weight_solver._step(1.0, 0)
 
         _compute_weight.assert_called_with(
             weight=self.weight_solver.weights[0],
