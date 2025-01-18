@@ -23,8 +23,8 @@ class UCBSolver(WeightSolver):
     def __init__(
         self,
         action_keys: Iterable[actionKey],
-        optimistic_value=0.0,
-        step_size=1.0,
+        optimistic_value: float = 0.0,
+        step_size: float = 1.0,
         confidence: float = 1.0,
     ) -> None:
         """_summary_
@@ -74,7 +74,7 @@ class UCBSolver(WeightSolver):
         def compute_weight(
             action_weight: float, action_target: float, action_count: int
         ) -> float:
-            new_weight = self._compute_weight(
+            new_weight: float = self._compute_weight(
                 weight=action_weight,
                 step_size_value=self.step_size,
                 confidence=self.confidence,
