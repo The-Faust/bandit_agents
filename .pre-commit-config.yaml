@@ -30,7 +30,6 @@ repos:
         language: system
         'types': [python]
         files: README.ipynb
-        stages: [pre-commit]
       - id: run unit tests
         name: unit tests running if code change
         entry: conda run -n bandit_agents_dev_env python3 -m unittest discover
