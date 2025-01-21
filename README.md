@@ -121,4 +121,10 @@ for i in range(100):
 print(agent.info())
 ```
 
+## Run exemples via the terminal
+You can run all the exemples via the terminal. To do so go into the project's folder and run
+`python3 -m . -e basic` for the basic exemples and `python3 -m . -e agents` to run the agents exemples.
+
+### performances
+
 There are many more options you can use in the library to solve your problems depending on your needs and I hope you will install it and use it for your projects.

@@ -9,6 +9,7 @@ dependencies:
   - scipy
   - pandas
   - black
+  - nbconvert
 
 platforms:
   - linux-64
