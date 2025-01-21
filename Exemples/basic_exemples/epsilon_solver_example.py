@@ -4,9 +4,7 @@ from typing import Any, Callable, List, Tuple
 from numpy import ndarray
 from scipy.stats import gamma
 
-from BanditAgents import SimulationContext
-from BanditAgents import Solvers
-from BanditAgents.src.solvers import EpsilonSolver
+from BanditAgents import SimulationContext, Solvers, EpsilonSolver
 
 
 def epsilon_solver_example() -> ndarray[float, Any]:

@@ -1,5 +1,5 @@
 import logging
-from typing import Dict, Generator, Iterable, Self
+from typing import Any, Dict, Generator, Iterable, Self
 
 from numpy import array, ndarray, random
 from BanditAgents.src.solvers.base_solver import BaseSolver
@@ -111,7 +111,9 @@ class WeightSolver(BaseSolver):
         """_summary_"""
         self.weights = array([self.optimistic_value for _ in self.action_keys])
 
-    def _steps(self, x: ndarray[int], y: ndarray[float]) -> Generator[bool]:
+    def _steps(
+        self, x: ndarray[int], y: ndarray[float]
+    ) -> Generator[bool, Any, None]:
         """_summary_
 
         Parameters
