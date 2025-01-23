@@ -29,7 +29,7 @@ repos:
         entry: jupyter nbconvert --template python_codeblocks.tpl --to markdown README.ipynb
         language: system
         'types': [python]
-        stages: [commit]
+        stages: [pre-commit]
       - id: run unit tests
         name: unit tests running if code change
         entry: conda run -n bandit_agents_dev_env python3 -m unittest discover
