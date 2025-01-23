@@ -1,0 +1,6 @@
+services:
+  unit-tests:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: unit-test-image

@@ -9,6 +9,8 @@ dependencies:
   - scipy
   - pandas
   - black
+  - tox
+  - tox-current-env
 
 platforms:
   - linux-64
