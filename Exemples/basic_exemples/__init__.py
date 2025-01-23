@@ -30,3 +30,6 @@ def run_basic_examples() -> DataFrame:
     )
 
     return simulation_results
+
+
+__all__ = ['run_basic_examples']

@@ -3,8 +3,7 @@ from typing import Callable, List, Tuple
 from numpy import ndarray
 from scipy.stats import gamma
 
-from BanditAgents import Solvers, SimulationContext
-from BanditAgents.src.solvers import WeightSolver
+from BanditAgents import Solvers, WeightSolver, SimulationContext
 
 
 def weight_solver_example() -> ndarray[float]:

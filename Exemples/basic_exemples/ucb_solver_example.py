@@ -3,8 +3,7 @@ from typing import Callable, List, Tuple
 from numpy import ndarray
 from scipy.stats import gamma
 
-from BanditAgents import Solvers, SimulationContext
-from BanditAgents.src.solvers import UCBSolver
+from BanditAgents import Solvers, UCBSolver, SimulationContext
 
 
 def ucb_solver_example() -> ndarray[float]:
