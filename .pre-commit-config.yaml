@@ -24,12 +24,6 @@ repos:
         name: check that bandit-agents-dev-env-64.lock file exists
         entry: echo -e bandit-agents-dev-env-64.lock
         language: system
-      - id: check if README.ipynb was changed
-        name: check if readme notebook was changed
-        entry: jupyter nbconvert --template python_codeblocks.tpl --to markdown README.ipynb
-        language: system
-        'types': [python]
-        stages: [pre-commit]
       - id: run unit tests
         name: unit tests running if code change
         entry: conda run -n bandit_agents_dev_env python3 -m unittest discover

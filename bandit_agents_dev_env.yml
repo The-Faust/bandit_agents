@@ -5,11 +5,14 @@ channels:
 dependencies:
   - pip
   - pre-commit
-  - python
+  - python==3.12
   - scipy
   - pandas
   - black
-  - nbconvert
+  - nbconvert==5.6.1
+  - nbformat==4.4.0 
+  - ipython_genutils
+  - jinja2
 
 platforms:
   - linux-64
