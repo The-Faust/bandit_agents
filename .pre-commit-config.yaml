@@ -26,10 +26,10 @@ repos:
         language: system
       - id: check if README.ipynb was changed
         name: check if readme notebook was changed
-        entry: jupyter nbconvert --template "python_codeblocks.tpl" --to markdown README.ipynb
+        entry: jupyter nbconvert --template python_codeblocks.tpl --to markdown README.ipynb
         language: system
         'types': [python]
-        files: README.ipynb
+        stages: [commit]
       - id: run unit tests
         name: unit tests running if code change
         entry: conda run -n bandit_agents_dev_env python3 -m unittest discover
