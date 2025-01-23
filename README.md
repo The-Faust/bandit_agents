@@ -126,5 +126,6 @@ You can run all the exemples via the terminal. To do so go into the project's fo
 `python3 -m . -e basic` for the basic exemples and `python3 -m . -e agents` to run the agents exemples.
 
 ### performances
+To have get a breakdown of the agents performances I suggest you take a look at [README.ipynb](https://github.com/The-Faust/bandit_agents/blob/master/README.ipynb)
 
 There are many more options you can use in the library to solve your problems depending on your needs and I hope you will install it and use it for your projects.

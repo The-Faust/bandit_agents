@@ -9,10 +9,6 @@ dependencies:
   - scipy
   - pandas
   - black
-  - nbconvert==5.6.1
-  - nbformat==4.4.0 
-  - ipython_genutils
-  - jinja2
 
 platforms:
   - linux-64
