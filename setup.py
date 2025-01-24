@@ -16,7 +16,7 @@ setup(
     author="Vincent Martel",
     author_email="vincent.martel.11235@gmail.com",
     description="Library to solve k-armed bandit problems",
-    packages=find_packages(exclude=["Tests"]),
+    packages=find_packages(),
     long_description=read("BanditAgents/README.md"),
     install_requires=requirements,
     setup_requires=["flake8", 'setuptools', 'setuptools-git', 'wheel'],
