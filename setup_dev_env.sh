@@ -1,6 +1,6 @@
 #!/bin/sh +x
 
-chmod +x build_env.sh compile_env_lock.sh
+chmod +x build_env.sh compile_env_lock.sh package_lib.sh
 
 if [ ! -e bandit-agents-dev-env-linux-64.lock ] || 
   [ ! -e bandit-agents-dev-env-win-64.lock ] || 
