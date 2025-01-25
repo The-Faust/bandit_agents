@@ -42,7 +42,6 @@ COPY publish_lib.sh lib/publish_lib.sh
 
 WORKDIR /lib
 
-
 RUN chmod +x publish_lib.sh
 
 CMD ["./publish_lib.sh"]
