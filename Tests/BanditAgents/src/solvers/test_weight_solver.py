@@ -1,4 +1,4 @@
-from typing import Generator, Iterable, List
+from typing import Iterable, List
 import unittest
 from unittest.mock import patch
 
@@ -38,7 +38,7 @@ def make_mock_base_solver(action_keys: Iterable[actionKey]) -> BaseSolver:
     return BaseSolverBuilder().with_action_keys(action_keys).build()
 
 
-def mock__steps(x: ndarray[int], y: ndarray[float]) -> Generator[bool]:
+def mock__steps(x: ndarray[int], y: ndarray[float]) -> Iterable[bool]:
     return (True for _ in x)
 
 

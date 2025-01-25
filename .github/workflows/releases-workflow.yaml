@@ -1,0 +1,11 @@
+name: Publish on Pypi workflow
+on:
+  push:
+    branches:
+      - releases/**
+
+jobs:
+  publish-on-pypi:
+    steps:
+      - name: publish on pypi
+        run: docker compose up --build publish-lib
