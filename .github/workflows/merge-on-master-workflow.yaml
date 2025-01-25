@@ -1,4 +1,4 @@
-name: PR workflow
+name: merge on master workflow
 on:
   pull_request:
     types:
