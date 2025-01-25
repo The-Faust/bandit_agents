@@ -1,10 +1,6 @@
 name: PR workflow
 on:
-  pull_request:
-    types:
-      - created
-    branches:
-      - master
+  workflow_call
 
 jobs:
   run-unit-tests:
