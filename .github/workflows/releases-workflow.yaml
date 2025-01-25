@@ -6,6 +6,7 @@ on:
 
 jobs:
   publish-on-pypi:
+    runs-on: ubuntu-latest
     steps:
       - name: publish on pypi
-        run: docker compose up --build publish-lib
+        run: docker compose -f docker-compose.yml up --build publish-lib
