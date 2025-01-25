@@ -1,10 +1,14 @@
 name: PR workflow
 on:
-  workflow_call
+  pull_request:
+    branches:
+      - master
 
 jobs:
   run-unit-tests:
     environment: unittests env
+    runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - name: run unittests
-        run: docker compose up --build unit-tests
+        run: docker compose up unit-tests
