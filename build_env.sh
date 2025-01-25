@@ -11,7 +11,7 @@ if [ $ENV = "BUILD" ]; then
     rm -rf /env/include &&
     rm /env/lib/libpython3.12.so.1.0 &&
     find -name '__pycache__' -type d -exec rm -rf '{}' '+' &&
-    rm -rf /env/lib/python3.12/site-packages/pip /env/lib/python3.12/idlelib /env/lib/python3.12/ensurepip \
+    rm -rf /env/lib/python3.12/site-packages/pip /env/lib/python3.12/idlelib \
       /env/lib/libasan.so.5.0.0 \
       /env/lib/libtsan.so.0.0.0 \
       /env/lib/liblsan.so.0.0.0 \

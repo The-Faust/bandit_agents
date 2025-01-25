@@ -11,7 +11,7 @@ with open("BanditAgents/requirements.txt") as f:
     requirements: list[str] = f.read().splitlines()
 
 setup(
-    name="Bandit Problem Solvers",
+    name="Bandit Agents",
     version="0.5.0",
     author="Vincent Martel",
     author_email="vincent.martel.11235@gmail.com",

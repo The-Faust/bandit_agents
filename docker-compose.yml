@@ -4,3 +4,11 @@ services:
       context: .
       dockerfile: Dockerfile
       target: unit-test-image
+
+  publish-lib:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: publish-lib-image
+      args:
+        PYPI_TOKEN: $PYPI_TOKEN
