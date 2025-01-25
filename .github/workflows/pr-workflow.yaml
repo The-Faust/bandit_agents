@@ -2,7 +2,7 @@ name: PR workflow
 on:
   pull_request:
     types:
-      - closed
+      - created
     branches:
       - master
 
@@ -12,21 +12,3 @@ jobs:
     steps:
       - name: run unittests
         run: docker compose up --build unit-tests
-
-  increment-tag:
-    environment: tag and releases env
-    if: github.event.pull_request.merged == true
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.merge_commit_sha }}
-          fetch-depth: '0'
-      - name: Increment version and push tag
-        uses: anothrNick/github-tag-action@1.67.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.BANDIT_AGENT_ACTIONS_TOKEN }}
-          WITH_V: false
-          DEFAULT_BUMP: patch
