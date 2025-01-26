@@ -24,7 +24,7 @@ class SimulationContextActionFactory:
         Returns
         -------
         Callable[[], float]
-            a function that calls a gamma distributions fitted on y
+            a function that calls a gamma distribution fitted on y
         """
         shape, loc, scale = gamma.fit(y)
 
@@ -37,21 +37,22 @@ class SimulationContextActionFactory:
     def make_gamma_action(
         self, alpha: float, loc: float = None, scale: float = None
     ) -> Callable[[], float]:
-        """_summary_
+        """Generates a gamma.rvs function based of alpha, loc, scale
 
         Parameters
         ----------
         alpha : float
-            _description_
+            shape parameter of the distribution
         loc : float, optional
-            _description_, by default None
+            loc parameter of the distribution, by default None
         scale : float, optional
-            _description_, by default None
+            scale parameter of the distribution, by default None
 
         Returns
         -------
         Callable[[], float]
-            _description_
+            a gamma rvs that will always be executed with parameters
+                alpha, loc and scale
         """
         g_kwargs = dict(a=alpha)
 
@@ -79,7 +80,7 @@ class SimulationContext:
             ]
         ],
     ) -> None:
-        """_summary_
+        """Constructor of the simulation object
 
         Parameters
         ----------
@@ -88,7 +89,14 @@ class SimulationContext:
             |  Tuple[float, ...]
             |  ndarray[float]]
         ]
-            _description_
+            _An Iterable, could be a list, a tuple, a generator, etc. of pairs.
+
+            - The first member of every pair must be an actionKey.
+            - The second member can be a Callable that must return a float,
+                a tuple containing alpha, loc and scale parameters
+                for a gamma distribution,
+                or an array of floats that will be used
+                to fit a gamma distribution on them
         """
         self.logger: logging.Logger = logging.getLogger(__name__)
 
@@ -107,6 +115,29 @@ class SimulationContext:
 
         return
 
+    def act(
+        self, targets: ndarray[float64], step: int, action_index: int
+    ) -> float:
+        """Execute a gievn solver's decision
+
+        Parameters
+        ----------
+        targets : ndarray[float64]
+            Matrix n_steps by n_actions containing results of action j at step i
+        step : int
+            Row selector in the target matrix
+        action_index : int
+            Column selector in the target matrix
+
+        Returns
+        -------
+        float
+            value found at target[step, action_index]
+        """
+        target: float = targets[step, action_index]
+
+        return target
+
     def add_action(
         self,
         action_key: actionKey,
@@ -115,18 +146,24 @@ class SimulationContext:
         ),
         is_return: bool = True,
     ) -> Self | None:
-        """_summary_
+        """Add an action to the context
 
         Parameters
         ----------
         action_key : actionKey
-            _description_
+            identifier of the action
         action_data : Callable[[any], float]
             | Tuple[float, ...]
             | ndarray[float]
-            _description_
+            if action_data is callable, add the action to the context
+            if action_data  is a tuple of 3 floats it will create a
+                gamma function that uses the three floats as
+                shape, loc, scale respectively
+            if action_data  is an array of float it will return a gamma
+                function fitted on the array
         is_return : bool, optional
-            _description_, by default True
+            if is return, returns the Simulation context itself,
+            otherwise returns None, by default True
 
         Returns
         -------
@@ -215,24 +252,25 @@ class SimulationContext:
             ],
         ]
     ]:
-        """_summary_
+        """Runs the silumation on given solvers
 
         Parameters
         ----------
         n_steps : int
             Number of steps that the simulation will execute
         solvers : List[Type[(BaseSolver,)]]
-            _description_
+            List of solvers that will interact with the simulation
         steps_by_ticks : int, optional
-            _description_, by default 1
+            Number of steps between fits, by default 1
         as_dict : bool, optional
-            _description_, by default False
+            define whether or not you want to yielded objects
+            to be arrays or dictionnaries, by default False
 
         Returns
         -------
         Tuple[ndarray[int64], ndarray[int64], ndarray[str], ndarray[float64]]
         | Dict[str, ndarray]
-            _description_
+            results of each solver's simulation
         """
         action_keys = solvers[0].action_keys
 
@@ -350,26 +388,3 @@ class SimulationContext:
                 results = (steps, indexes, action_keys, targets)
 
             yield solver.solver_id, results
-
-    def act(
-        self, targets: ndarray[float64], step: int, action_index: int
-    ) -> float:
-        """_summary_
-
-        Parameters
-        ----------
-        targets : ndarray[float64]
-            _description_
-        step : int
-            _description_
-        action_index : int
-            _description_
-
-        Returns
-        -------
-        float
-            _description_
-        """
-        target: float = targets[step, action_index]
-
-        return target
