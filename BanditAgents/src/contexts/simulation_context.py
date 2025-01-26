@@ -286,105 +286,244 @@ class SimulationContext:
             targets[step] = array([self.action_dict[k]() for k in action_keys])
 
         for solver in solvers:
-            self.logger.debug(f"Running simulation for {solver.solver_id}")
-
-            last_training_index: int = 0
-            solver_targets: ndarray[float64] = empty(n_steps)
-            action_keys: ndarray[str] = empty(n_steps, dtype="<U100")
-            indexes: ndarray[int64] = empty(n_steps, dtype=int64)
-
-            for step in range(n_steps):
-                self.logger.debug(
-                    f"Simulation step {step}\n---------------------------------------"
-                    "----------------------------------------------------"
-                )
-                action_index: int = solver.predict()
-                indexes[step] = action_index
-
-                if (
-                    step % steps_by_ticks == 0 or step == n_steps - 1
-                ) and step != 0:
-                    self.logger.debug(f"step {step} is a training step")
-
-                    difference: int = (
-                        (step - last_training_index)
-                        if step == n_steps - 1
-                        else steps_by_ticks
-                    )
-                    start_index: int = step - difference
-                    end_index: int = step + 1 if step == n_steps - 1 else step
-
-                    self.logger.debug(
-                        "training on targets indexes: "
-                        f"{start_index} to {end_index}"
-                    )
-
-                    steps_to_execute: ndarray[int64] = steps[
-                        start_index:end_index
-                    ]
-                    indexes_to_execute: ndarray[int64] = indexes[
-                        start_index:end_index
-                    ]
-                    self.logger.debug(
-                        f"{solver.solver_id}'s decision indexes were {indexes_to_execute}"
-                    )
-
-                    action_keys_to_execute: Tuple[actionKey] = array(
-                        [
-                            action_key
-                            for action_key in solver.indexes_to_action_keys(
-                                indexes_to_execute
-                            )
-                        ],
-                        dtype="<U100",
-                    )
-                    self.logger.debug(
-                        f"Which corresponds to actions {action_keys_to_execute}"
-                    )
-
-                    action_keys[start_index:end_index] = action_keys_to_execute
-
-                    self.logger.debug("Executing decisions")
-
-                    tick_targets: ndarray[Any, dtype[Any]] = array(
-                        [
-                            self.act(targets, step_to_execute, action_index)
-                            for step_to_execute, action_index in zip(
-                                steps_to_execute, indexes_to_execute
-                            )
-                        ]
-                    )
-                    self.logger.debug(
-                        f"Decisions wielded following targets {tick_targets}"
-                    )
-
-                    solver_targets[start_index:end_index] = tick_targets
-
-                    self.logger.debug(
-                        f"Fitting solver {solver.solver_id} with targets"
-                    )
-                    solvers = solver.fit(x=indexes_to_execute, y=tick_targets)
-                    self.logger.debug(
-                        "the training resulted in the following weights "
-                        f"{solver.weights}"
-                    )
-
-                    last_training_index = step
-
-            self.logger.debug(
-                "----------------------------------------------------------"
-                "---------------------------------\nRun completed!\n"
+            yield self._run_solver_simulation(
+                n_steps=n_steps,
+                steps_by_ticks=steps_by_ticks,
+                steps=steps,
+                targets=targets,
+                as_dict=as_dict,
+                solver=solver,
             )
 
-            if as_dict:
-                results: Dict[str, ndarray] = {
-                    "steps": steps,
-                    "action_indexes": indexes,
-                    "action_keys": action_keys,
-                    "targets": solver_targets,
-                }
+    def _run_solver_simulation(
+        self,
+        n_steps: int,
+        steps_by_ticks: int,
+        steps: ndarray[int64],
+        targets: ndarray[float64],
+        as_dict: bool,
+        solver: Type[(BaseSolver,)],
+    ) -> Tuple[
+        str,
+        Dict[str, any]
+        | Tuple[
+            ndarray[int64], ndarray[int64], ndarray[str], ndarray[float64]
+        ],
+    ]:
+        """_summary_
 
-            else:
-                results = (steps, indexes, action_keys, targets)
+        Parameters
+        ----------
+        n_steps : int
+            _description_
+        steps_by_ticks : int
+            _description_
+        steps : ndarray[int64]
+            _description_
+        targets : ndarray[float64]
+            _description_
+        as_dict : bool
+            _description_
+        solver : Type[
+            _description_
 
-            yield solver.solver_id, results
+        Returns
+        -------
+        Tuple[ str, Dict[str, any] | Tuple[ndarray[int64], ndarray[int64], ndarray[str], ndarray[float64]], ]
+            _description_
+        """
+        self.logger.debug(f"Running simulation for {solver.solver_id}")
+
+        last_training_index: int = 0
+        solver_targets: ndarray[float64] = empty(n_steps)
+        action_keys: ndarray[str] = empty(n_steps, dtype="<U100")
+        indexes: ndarray[int64] = empty(n_steps, dtype=int64)
+
+        for step in range(n_steps):
+            self._take_a_step(
+                step=step,
+                steps=steps,
+                indexes=indexes,
+                steps_by_ticks=steps_by_ticks,
+                n_steps=n_steps,
+                action_keys=action_keys,
+                targets=targets,
+                solver_targets=solver_targets,
+                solver=solver,
+                last_training_index=last_training_index,
+            )
+
+        self.logger.debug(
+            "----------------------------------------------------------"
+            "---------------------------------\nRun completed!\n"
+        )
+
+        if as_dict:
+            results: Dict[str, ndarray] = {
+                "steps": steps,
+                "action_indexes": indexes,
+                "action_keys": action_keys,
+                "targets": solver_targets,
+            }
+
+        else:
+            results = (steps, indexes, action_keys, targets)
+
+        return solver.solver_id, results
+
+    def _take_a_step(
+        self,
+        step: int,
+        steps: ndarray[int64],
+        indexes: ndarray[int64],
+        steps_by_ticks: int,
+        n_steps: int,
+        action_keys: ndarray[str],
+        targets: ndarray[float64],
+        solver_targets: ndarray[float64],
+        solver: Type[(BaseSolver,)],
+        last_training_index: int,
+    ) -> None:
+        """_summary_
+
+        Parameters
+        ----------
+        step : int
+            _description_
+        steps : ndarray[int64]
+            _description_
+        indexes : ndarray[int64]
+            _description_
+        steps_by_ticks : int
+            _description_
+        n_steps : int
+            _description_
+        action_keys : ndarray[str]
+            _description_
+        targets : ndarray[float64]
+            _description_
+        solver_targets : ndarray[float64]
+            _description_
+        solver : Type[
+            _description_
+        last_training_index : int
+            _description_
+        """
+        self.logger.debug(
+            f"Simulation step {step}\n---------------------------------------"
+            "----------------------------------------------------"
+        )
+        action_index: int = solver.predict()
+        indexes[step] = action_index
+
+        if (step % steps_by_ticks == 0 or step == n_steps - 1) and step != 0:
+            self._fit_step(
+                step=step,
+                steps=steps,
+                indexes=indexes,
+                steps_by_ticks=steps_by_ticks,
+                n_steps=n_steps,
+                action_keys=action_keys,
+                targets=targets,
+                solver_targets=solver_targets,
+                solver=solver,
+                last_training_index=last_training_index,
+            )
+
+    def _fit_step(
+        self,
+        step: int,
+        steps: ndarray[int64],
+        indexes: ndarray[int64],
+        steps_by_ticks: int,
+        n_steps: int,
+        action_keys: ndarray[str],
+        targets: ndarray[float64],
+        solver_targets: ndarray[float64],
+        solver: Type[(BaseSolver,)],
+        last_training_index: int,
+    ) -> None:
+        """_summary_
+
+        Parameters
+        ----------
+        step : int
+            _description_
+        steps : ndarray[int64]
+            _description_
+        indexes : ndarray[int64]
+            _description_
+        steps_by_ticks : int
+            _description_
+        n_steps : int
+            _description_
+        action_keys : ndarray[str]
+            _description_
+        targets : ndarray[float64]
+            _description_
+        solver_targets : ndarray[float64]
+            _description_
+        solver : Type[
+            _description_
+        last_training_index : int
+            _description_
+        """
+        self.logger.debug(f"step {step} is a training step")
+
+        difference: int = (
+            (step - last_training_index)
+            if step == n_steps - 1
+            else steps_by_ticks
+        )
+        start_index: int = step - difference
+        end_index: int = step + 1 if step == n_steps - 1 else step
+
+        self.logger.debug(
+            "training on targets indexes: " f"{start_index} to {end_index}"
+        )
+
+        steps_to_execute: ndarray[int64] = steps[start_index:end_index]
+        indexes_to_execute: ndarray[int64] = indexes[start_index:end_index]
+        self.logger.debug(
+            f"{solver.solver_id}'s decision indexes were {indexes_to_execute}"
+        )
+
+        action_keys_to_execute: Tuple[actionKey] = array(
+            [
+                action_key
+                for action_key in solver.indexes_to_action_keys(
+                    indexes_to_execute
+                )
+            ],
+            dtype="<U100",
+        )
+        self.logger.debug(
+            f"Which corresponds to actions {action_keys_to_execute}"
+        )
+
+        action_keys[start_index:end_index] = action_keys_to_execute
+
+        self.logger.debug("Executing decisions")
+
+        tick_targets: ndarray[Any, dtype[Any]] = array(
+            [
+                self.act(targets, step_to_execute, action_index)
+                for step_to_execute, action_index in zip(
+                    steps_to_execute, indexes_to_execute
+                )
+            ]
+        )
+        self.logger.debug(
+            f"Decisions wielded following targets {tick_targets}"
+        )
+
+        solver_targets[start_index:end_index] = tick_targets
+
+        self.logger.debug(f"Fitting solver {solver.solver_id} with targets")
+        solver = solver.fit(x=indexes_to_execute, y=tick_targets)
+        self.logger.debug(
+            "the training resulted in the following weights "
+            f"{solver.weights}"
+        )
+
+        last_training_index = step
