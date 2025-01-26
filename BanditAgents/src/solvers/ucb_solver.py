@@ -12,7 +12,7 @@ from numpy import (
     inf,
 )
 from BanditAgents.src.solvers.weight_solver import WeightSolver
-from BanditAgents.src.domain import actionKey
+from BanditAgents.src.domain import actionKey, solverKey
 
 
 class UCBSolver(WeightSolver):
@@ -26,6 +26,7 @@ class UCBSolver(WeightSolver):
         optimistic_value: float = 0.0,
         step_size: float = 1.0,
         confidence: float = 1.0,
+        solver_id: solverKey = None,
     ) -> None:
         """_summary_
 
@@ -39,11 +40,14 @@ class UCBSolver(WeightSolver):
             _description_, by default 1.
         confidence : float, optional
             _description_, by default 1.
+        solver_id: solverKey, optional
+            _description_, by default None
         """
         super().__init__(
             action_keys=action_keys,
             optimistic_value=optimistic_value,
             step_size=step_size,
+            solver_id=solver_id,
         )
 
         self.action_counts = zeros(len(self.action_keys))

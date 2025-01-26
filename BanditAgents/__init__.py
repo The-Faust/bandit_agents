@@ -8,7 +8,7 @@ from BanditAgents.src.solvers import (
 )
 from BanditAgents.src.contexts.simulation_context import SimulationContext
 
-from BanditAgents.src.domain import actionKey
+from BanditAgents.src.domain import actionKey, solverKey
 
 from BanditAgents.src.domain.hyperparameters import (
     BaseSolverHyperParameters,
@@ -32,4 +32,5 @@ __all__: list[str] = [
     "WeightSolverHyperParameters",
     "UCBSolverHyperParameters",
     "ContextHyperParameters",
+    "solverKey",
 ]
