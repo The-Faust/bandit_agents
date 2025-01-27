@@ -272,7 +272,7 @@ class SimulationContext:
         | Dict[str, ndarray]
             results of each solver's simulation
         """
-        action_keys = solvers[0].action_keys
+        action_keys: Tuple[actionKey] = solvers[0].action_keys
 
         # insure that action keys are aligned
         assert all(
@@ -310,27 +310,32 @@ class SimulationContext:
             ndarray[int64], ndarray[int64], ndarray[str], ndarray[float64]
         ],
     ]:
-        """_summary_
+        """Run simulation for one solver
 
         Parameters
         ----------
         n_steps : int
-            _description_
+            Number of steps that the simulation will execute
         steps_by_ticks : int
-            _description_
+            Number of steps between fits
         steps : ndarray[int64]
-            _description_
+            Array of steps
         targets : ndarray[float64]
-            _description_
+            Matrix n_steps by n_actions containing results of action j at step i
         as_dict : bool
-            _description_
+            define whether or not you want to yielded objects
+            to be arrays or dictionnaries
         solver : Type[
-            _description_
+            Solver that will interact with the simulation
 
         Returns
         -------
-        Tuple[ str, Dict[str, any] | Tuple[ndarray[int64], ndarray[int64], ndarray[str], ndarray[float64]], ]
-            _description_
+        Tuple[
+            str,
+            Dict[str, any]
+            | Tuple[ndarray[int64], ndarray[int64], ndarray[str], ndarray[float64]],
+        ]
+            Results of the solver's simulation
         """
         self.logger.debug(f"Running simulation for {solver.solver_id}")
 
@@ -384,30 +389,30 @@ class SimulationContext:
         solver: Type[(BaseSolver,)],
         last_training_index: int,
     ) -> None:
-        """_summary_
+        """Run one step of the simulation
 
         Parameters
         ----------
         step : int
-            _description_
+            Current step of the simulation
         steps : ndarray[int64]
-            _description_
+            Array of steps
         indexes : ndarray[int64]
-            _description_
+            Array of solver's decisions
         steps_by_ticks : int
-            _description_
+            Number of steps between fits
         n_steps : int
-            _description_
+            Number of steps that the simulation will execute
         action_keys : ndarray[str]
-            _description_
+            array of action identifiers
         targets : ndarray[float64]
-            _description_
+            Matrix n_steps by n_actions containing results of action j at step i
         solver_targets : ndarray[float64]
-            _description_
-        solver : Type[
-            _description_
+            results of the solver's decisions
+        solver : Type[(BaseSolver,)]
+            Solver interacting with the simulation
         last_training_index : int
-            _description_
+            Last step at which the solver was trained
         """
         self.logger.debug(
             f"Simulation step {step}\n---------------------------------------"
@@ -443,30 +448,30 @@ class SimulationContext:
         solver: Type[(BaseSolver,)],
         last_training_index: int,
     ) -> None:
-        """_summary_
+        """Execute fitting part of a step
 
         Parameters
         ----------
         step : int
-            _description_
+            Current step of the simulation
         steps : ndarray[int64]
-            _description_
+            Array of steps
         indexes : ndarray[int64]
-            _description_
+            Array of solver's decisions
         steps_by_ticks : int
-            _description_
+            Number of steps between fits
         n_steps : int
-            _description_
+            Number of steps that the simulation will execute
         action_keys : ndarray[str]
-            _description_
+            array of action identifiers
         targets : ndarray[float64]
-            _description_
+            Matrix n_steps by n_actions containing results of action j at step i
         solver_targets : ndarray[float64]
-            _description_
-        solver : Type[
-            _description_
+            results of the solver's decisions
+        solver : Type[(BaseSolver,)]
+            Solver interacting with the simulation
         last_training_index : int
-            _description_
+            Last step at which the solver was trained
         """
         self.logger.debug(f"step {step} is a training step")
 
