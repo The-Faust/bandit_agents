@@ -1,7 +1,7 @@
 from typing import Iterable
 from numpy import random
 from BanditAgents.src.solvers.weight_solver import WeightSolver
-from BanditAgents.src.domain import actionKey
+from BanditAgents.src.domain import actionKey, solverKey
 
 
 class EpsilonSolver(WeightSolver):
@@ -13,6 +13,7 @@ class EpsilonSolver(WeightSolver):
         optimistic_value: float = 0.0,
         step_size: float = 1.0,
         epsilon: float = 1e-10,
+        solver_id: solverKey = None,
     ) -> None:
         """_summary_
 
@@ -26,11 +27,14 @@ class EpsilonSolver(WeightSolver):
             _description_, by default 1.
         epsilon : float, optional
             _description_, by default 1e-10
+        solver_id: solverKey, optional
+            _description_, by default None
         """
         super().__init__(
             action_keys=action_keys,
             optimistic_value=optimistic_value,
             step_size=step_size,
+            solver_id=solver_id,
         )
 
         self.epsilon = epsilon

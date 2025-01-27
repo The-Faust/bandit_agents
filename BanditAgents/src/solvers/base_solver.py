@@ -1,15 +1,22 @@
 from typing import Dict, Generator, Iterable, Self, Tuple
 
 from numpy import float64, ndarray, zeros
-from BanditAgents.src.domain import actionKey
+from uuid import uuid4
+
+from BanditAgents.src.domain import actionKey, solverKey
 
 
 class BaseSolver:
+    solver_id: solverKey
     action_keys: Tuple[actionKey]
     weights: ndarray[float64]
 
     def __init__(
-        self, action_keys: Iterable[actionKey], *args, **kwargs
+        self,
+        action_keys: Iterable[actionKey],
+        solver_id: solverKey = None,
+        *args,
+        **kwargs
     ) -> None:
         """_summary_
 
@@ -18,6 +25,12 @@ class BaseSolver:
         action_keys : Iterable[actionKey]
             _description_
         """
+        if solver_id is not None:
+            self.solver_id = solver_id
+
+        else:
+            self.solver_id = uuid4()
+
         self.action_keys = tuple(ac for ac in action_keys)
         self.weights = zeros(len(self.action_keys))
 

@@ -1,9 +1,11 @@
 from dataclasses import dataclass
 
+from BanditAgents.src.domain import solverKey
+
 
 @dataclass
 class BaseSolverHyperParameters:
-    pass
+    solver_id: solverKey = False
 
 
 @dataclass
@@ -31,3 +33,9 @@ class UCBSolverHyperParameters(WeightSolverHyperParameters):
 @dataclass
 class ContextHyperParameters:
     pass
+
+
+@dataclass
+class SimulationParameters:
+    n_steps: int
+    steps_by_ticks: int

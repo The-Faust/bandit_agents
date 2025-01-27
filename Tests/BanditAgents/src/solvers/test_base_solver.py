@@ -3,8 +3,7 @@ import unittest
 
 from numpy import array, float64, ndarray
 
-from BanditAgents import actionKey
-from BanditAgents.src.solvers.base_solver import BaseSolver
+from BanditAgents import BaseSolver, actionKey
 
 
 class TestBaseSolver(unittest.TestCase):

@@ -12,7 +12,7 @@ with open("BanditAgents/requirements.txt") as f:
 
 setup(
     name="Bandit Agents",
-    version="0.5.0",
+    version="0.5.1",
     author="Vincent Martel",
     author_email="vincent.martel.11235@gmail.com",
     description="Library to solve k-armed bandit problems",
