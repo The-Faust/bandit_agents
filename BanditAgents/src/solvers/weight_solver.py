@@ -2,11 +2,11 @@ import logging
 from typing import Any, Dict, Generator, Iterable, Self
 
 from numpy import array, ndarray, random
-from BanditAgents.src.solvers.base_solver import BaseSolver
+from BanditAgents.src.solvers.solver import Solver
 from BanditAgents.src.domain import actionKey, solverKey
 
 
-class WeightSolver(BaseSolver):
+class WeightSolver(Solver):
     optimistic_value: float
     step_size: float
     weights: ndarray[float]

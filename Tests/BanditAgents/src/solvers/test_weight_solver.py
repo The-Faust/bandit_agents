@@ -7,11 +7,11 @@ from numpy import array, ndarray
 from BanditAgents import actionKey
 
 from BanditAgents.mocks.builders import BaseSolverBuilder
-from BanditAgents.src.solvers.base_solver import BaseSolver
+from BanditAgents.src.solvers.solver import Solver
 from BanditAgents.src.solvers.weight_solver import WeightSolver
 
 
-BASE_SOLVER_PATH: str = f"{WeightSolver.__module__}.{BaseSolver.__name__}"
+BASE_SOLVER_PATH: str = f"{WeightSolver.__module__}.{Solver.__name__}"
 _COMPUTE_WEIGHT_PATH: str = (
     f"{WeightSolver.__module__}"
     f".{WeightSolver.__name__}"
@@ -34,7 +34,7 @@ _STEPS_PATH: str = (
 )
 
 
-def make_mock_base_solver(action_keys: Iterable[actionKey]) -> BaseSolver:
+def make_mock_base_solver(action_keys: Iterable[actionKey]) -> Solver:
     return BaseSolverBuilder().with_action_keys(action_keys).build()
 
 

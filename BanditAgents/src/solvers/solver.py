@@ -6,7 +6,7 @@ from uuid import uuid4
 from BanditAgents.src.domain import actionKey, solverKey
 
 
-class BaseSolver:
+class Solver:
     solver_id: solverKey
     action_keys: Tuple[actionKey]
     weights: ndarray[float64]
@@ -18,12 +18,14 @@ class BaseSolver:
         *args,
         **kwargs
     ) -> None:
-        """_summary_
+        """Constructor of the Solver class
+
+        This class is a virtual class that should b inherited by all solver classes
 
         Parameters
         ----------
         action_keys : Iterable[actionKey]
-            _description_
+            keys associated to the actions the solver will operate
         """
         if solver_id is not None:
             self.solver_id = solver_id
@@ -35,52 +37,66 @@ class BaseSolver:
         self.weights = zeros(len(self.action_keys))
 
     def fit(self, *args, **kwargs) -> Self:
-        """_summary_
+        """Signature of the fit method, all Solvers must have a fit method implemented
+
+        This method should be what updates the solver's weights
+        given information based on its previous actions
 
         Returns
         -------
         Self
-            _description_
+            returns self after training
         """
 
     def indexes_to_action_keys(
         self, indexes: Iterable[int]
     ) -> Tuple[actionKey, ...]:
-        """_summary_
+        """convert an iterable of action indexes into a tuple of action keys
 
         Parameters
         ----------
         indexes : Iterable[int]
-            _description_
+            Iterable of action indexes
 
         Returns
         -------
         Tuple[actionKey, ...]
-            _description_
+            Tuple of action keys associated to every index found in indexes
         """
         action_keys = tuple(self.action_keys[index] for index in indexes)
 
         return action_keys
 
     def info(self) -> Dict[str, any]:
+        """Allows access to general information about the solver
+
+        Returns
+        -------
+        Dict[str, any]
+            returns a dictionnary containing the information
+        """
         solver_info = dict(action_keys=self.action_keys, weights=self.weights)
 
         return solver_info
 
     def predict(self) -> int:
-        """_summary_
+        """Signature of the predict method, all Solvers must have a predict method implemented
+
+        This method produces the choice of action when the solver is called
 
         Returns
         -------
         int
-            _description_
+            action index of the chosen action
         """
 
     def _step(self, *args, **kwargs) -> Generator[bool, any, None]:
-        """_summary_
+        """Signature of the _step method, all Solvers must have a _step method implemented
+
+        This method should be executed in fit tu update the weights
 
         Yields
         ------
         Generator[bool, any, None]
-            _description_
+            boolean that represents if step was completed successfully
         """

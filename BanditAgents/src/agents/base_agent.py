@@ -15,13 +15,13 @@ from BanditAgents.src.domain.hyperparameters import (
 from BanditAgents.src.domain.hyperparameters import (
     EpsilonSolverHyperParameters,
 )
-from BanditAgents.src.solvers.base_solver import BaseSolver
+from BanditAgents.src.solvers.solver import Solver
 
 
 class BaseAgent:
     agent_id: agentKey
     solvers: Solvers = Solvers()
-    solvers_dict: Dict[str, Callable[[any], Type[(BaseSolver,)]]] = {
+    solvers_dict: Dict[str, Callable[[any], Type[(Solver,)]]] = {
         EpsilonSolverHyperParameters.__name__: solvers.epsilon_solver,
         SamplingSolverHyperParameters.__name__: solvers.sampling_solver,
         UCBSolverHyperParameters.__name__: solvers.ucb_solver,
@@ -37,12 +37,12 @@ class BaseAgent:
         self,
         action_keys: Tuple[actionKey],
         solver_hyperparameters: Type[(BaseSolverHyperParameters,)],
-    ) -> Type[(BaseSolver)]:
+    ) -> Type[(Solver)]:
         self.logger.debug(
             f"making solver from hyperparameters {solver_hyperparameters}"
         )
 
-        solver: Type[(BaseSolver,)] = self.solvers_dict[
+        solver: Type[(Solver,)] = self.solvers_dict[
             type(solver_hyperparameters).__name__
         ](action_keys=action_keys, **solver_hyperparameters.__dict__)
 

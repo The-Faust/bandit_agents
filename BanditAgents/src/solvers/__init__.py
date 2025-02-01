@@ -5,7 +5,7 @@ from BanditAgents.src.domain.solver_args import (
     UCBSolverArgs,
     WeightSolverArgs,
 )
-from BanditAgents.src.solvers.base_solver import BaseSolver
+from BanditAgents.src.solvers.solver import Solver
 from BanditAgents.src.solvers.epsilon_solver import EpsilonSolver
 from BanditAgents.src.solvers.sampling_solver import SamplingSolver
 from BanditAgents.src.solvers.ucb_solver import UCBSolver
@@ -188,7 +188,7 @@ class Solvers:
 
 
 __all__: list[str] = [
-    "BaseSolver",
+    "Solver",
     "EpsilonSolver",
     "SamplingSolver",
     "UCBSolver",

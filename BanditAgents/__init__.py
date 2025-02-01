@@ -5,7 +5,7 @@ from BanditAgents.src.solvers import (
     WeightSolver,
     UCBSolver,
     SamplingSolver,
-    BaseSolver,
+    Solver,
 )
 from BanditAgents.src.contexts.simulation_context import SimulationContext
 
@@ -21,7 +21,7 @@ from BanditAgents.src.domain.hyperparameters import (
 
 __all__: list[str] = [
     "Agent",
-    "BaseSolver",
+    "Solver",
     "EpsilonSolver",
     "SamplingSolver",
     "UCBSolver",

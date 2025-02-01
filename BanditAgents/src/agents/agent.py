@@ -9,16 +9,16 @@ from BanditAgents.src.domain.hyperparameters import (
     ContextHyperParameters,
     SamplingSolverHyperParameters,
 )
-from BanditAgents.src.solvers import BaseSolver
-from BanditAgents.src.contexts.context import Context
+from BanditAgents.src.solvers import Solver
+from BanditAgents.src.contexts.sync_context import SyncContext
 
 
 class Agent(BaseAgent):
     actions_between_fits: int
-    context: Type[(Context,)]
-    solver: Type[(BaseSolver,)]
-    contexts_dict: Dict[str, Callable[[any], Type[(Context,)]]] = {
-        ContextHyperParameters.__name__: Context
+    context: Type[(SyncContext,)]
+    solver: Type[(Solver,)]
+    contexts_dict: Dict[str, Callable[[any], Type[(SyncContext,)]]] = {
+        ContextHyperParameters.__name__: SyncContext
     }
 
     def __init__(
