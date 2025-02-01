@@ -2,37 +2,23 @@ from typing import Callable, Dict, Iterable, Self, Tuple, Type
 
 from numpy import empty, float64, int64, ndarray
 
-from BanditAgents.src.domain import actionKey
+from BanditAgents.src.agents.base_agent import BaseAgent
+from BanditAgents.src.domain import actionKey, agentKey
 from BanditAgents.src.domain.hyperparameters import (
     BaseSolverHyperParameters,
     ContextHyperParameters,
-    EpsilonSolverHyperParameters,
     SamplingSolverHyperParameters,
-    UCBSolverHyperParameters,
-    WeightSolverHyperParameters,
 )
-from BanditAgents.src.solvers import (
-    BaseSolver,
-    EpsilonSolver,
-    SamplingSolver,
-    UCBSolver,
-    WeightSolver,
-)
+from BanditAgents.src.solvers import BaseSolver
 from BanditAgents.src.contexts.context import Context
 
 
-class Agent:
+class Agent(BaseAgent):
     actions_between_fits: int
     context: Type[(Context,)]
     solver: Type[(BaseSolver,)]
     contexts_dict: Dict[str, Callable[[any], Type[(Context,)]]] = {
         ContextHyperParameters.__name__: Context
-    }
-    solvers_dict: Dict[str, Callable[[any], Type[(BaseSolver,)]]] = {
-        EpsilonSolverHyperParameters.__name__: EpsilonSolver,
-        SamplingSolverHyperParameters.__name__: SamplingSolver,
-        UCBSolverHyperParameters.__name__: UCBSolver,
-        WeightSolverHyperParameters.__name__: WeightSolver,
     }
 
     def __init__(
@@ -45,37 +31,46 @@ class Agent:
         solver_hyperparameters: Type[
             (BaseSolverHyperParameters,)
         ] = SamplingSolverHyperParameters(),
+        agent_id: agentKey = False,
     ) -> None:
-        """_summary_
+        """Constructor to instanciate the agent
 
         Parameters
         ----------
         actions : Iterable[Tuple[actionKey, Callable[[any], float]]]
-            _description_
+            actions to be executed while the agent run
         actions_between_fits : int, optional
-            _description_, by default 1
+            Number of actions to execute before fitting the solver, by default 1
         context_hyperparameters : Type[, optional
-            _description_, by default ContextHyperParameters()
+            Hyperparameters of the context, by default ContextHyperParameters()
         solver_hyperparameters : Type[, optional
-            _description_, by default SamplingSolverHyperParameters()
+            Hyperparameters of the solver,
+            can be EpsilonSolverHyperParameters,
+            SamplingSolverHyperParameters,
+            UCBSolverHyperParameters or
+            WeightSolverHyperParameters
+            by default SamplingSolverHyperParameters()
+        agent_id : agentKey, optional
+            Id of the agent if false it will be a UUID, by default False
         """
+        super().__init__(agent_id=agent_id)
 
         self.actions_between_fits = actions_between_fits
         self.context = self.contexts_dict[
             type(context_hyperparameters).__name__
         ](actions=actions, **context_hyperparameters.__dict__)
-        self.solver = self.solvers_dict[type(solver_hyperparameters).__name__](
+        self.solver = self._from_solver_hyperparameters_make_solver(
             action_keys=self.context.get_action_keys(),
-            **context_hyperparameters.__dict__
+            solver_hyperparameters=solver_hyperparameters,
         )
 
     def act(self, *args, **kwargs) -> Tuple[ndarray[int64], ndarray[float64]]:
-        """_summary_
+        """Let the solver take action on the context
 
         Returns
         -------
-        float
-            _description_
+        Tuple[ndarray[int64], ndarray[float64]]
+            list of action ids and associated targets
         """
         action_indexes: ndarray[int64] = empty(
             self.actions_between_fits, dtype=int64
@@ -92,24 +87,24 @@ class Agent:
         return action_indexes, targets
 
     def fit(self, *args, **kwargs) -> Self:
-        """_summary_
+        """fit the solver
 
         Returns
         -------
         Self
-            _description_
+            returns the newly fitted agent
         """
         self.solver.fit(*args, **kwargs)
 
         return self
 
     def info(self) -> Dict[str, any]:
-        """_summary_
+        """produces information about the agent
 
         Returns
         -------
-        _type_
-            _description_
+        Dict[str, any]
+            Information of the agent as a dictionary
         """
         agent_info = dict(
             context_info=self.context.info(), solver_info=self.solver.info()

@@ -10,13 +10,14 @@ from BanditAgents.src.solvers.epsilon_solver import EpsilonSolver
 from BanditAgents.src.solvers.sampling_solver import SamplingSolver
 from BanditAgents.src.solvers.ucb_solver import UCBSolver
 from BanditAgents.src.solvers.weight_solver import WeightSolver
-from BanditAgents.src.domain import actionKey
+from BanditAgents.src.domain import actionKey, solverKey
 
 
 class Solvers:
     def epsilon_solver(
         self,
         action_keys: Iterable[actionKey],
+        solver_id: solverKey = None,
         optimistic_value: float = None,
         step_size: float = None,
         epsilon: float = None,
@@ -24,6 +25,7 @@ class Solvers:
         es_kwargs: Dict[str, Iterable[actionKey] | float] = (
             self._make_epsilon_solver_kwargs(
                 action_keys=action_keys,
+                solver_id=solver_id,
                 optimistic_value=optimistic_value,
                 step_size=step_size,
                 epsilon=epsilon,
@@ -37,12 +39,14 @@ class Solvers:
     def sampling_solver(
         self,
         action_keys: Iterable[actionKey],
+        solver_id: solverKey = None,
         n_sampling: int = None,
         max_sample_size: int = None,
     ) -> SamplingSolver:
         sampling_kwargs: Dict[str, Iterable[actionKey] | float | int] = (
             self._make_sampling_solver_kwargs(
                 action_keys=action_keys,
+                solver_id=solver_id,
                 n_sampling=n_sampling,
                 max_sample_size=max_sample_size,
             )
@@ -55,6 +59,7 @@ class Solvers:
     def ucb_solver(
         self,
         action_keys: Iterable[actionKey],
+        solver_id: solverKey = None,
         optimistic_value: float = None,
         step_size: float = None,
         confidence: float = None,
@@ -62,6 +67,7 @@ class Solvers:
         ucb_kwargs: Dict[str, Iterable[actionKey] | float] = (
             self._make_ucb_solver_kwargs(
                 action_keys=action_keys,
+                solver_id=solver_id,
                 optimistic_value=optimistic_value,
                 step_size=step_size,
                 confidence=confidence,
@@ -75,12 +81,14 @@ class Solvers:
     def weight_solver(
         self,
         action_keys: Iterable[actionKey],
+        solver_id: solverKey = None,
         optimistic_value: float = None,
         step_size: float = None,
     ) -> WeightSolver:
         ws_kwargs: Dict[str, Iterable[actionKey] | float] = (
             self._make_weight_solver_kwargs(
                 action_keys=action_keys,
+                solver_id=solver_id,
                 optimistic_value=optimistic_value,
                 step_size=step_size,
             )
@@ -93,6 +101,7 @@ class Solvers:
     def _make_epsilon_solver_kwargs(
         self,
         action_keys: Iterable[actionKey],
+        solver_id: solverKey = None,
         optimistic_value: float = None,
         step_size: float = None,
         epsilon: float = None,
@@ -100,6 +109,7 @@ class Solvers:
         es_kwargs: Dict[str, Iterable[actionKey] | float] = (
             self._make_weight_solver_kwargs(
                 action_keys=action_keys,
+                solver_id=solver_id,
                 optimistic_value=optimistic_value,
                 step_size=step_size,
             )
@@ -113,10 +123,14 @@ class Solvers:
     def _make_sampling_solver_kwargs(
         self,
         action_keys: Iterable[actionKey],
+        solver_id: solverKey = None,
         n_sampling: int = None,
         max_sample_size: int = None,
     ) -> Dict[str, Iterable[actionKey] | float]:
         sampling_kwargs = dict(action_keys=action_keys)
+
+        if solver_id is not None:
+            sampling_kwargs[WeightSolverArgs.SOLVER_ID.value] = solver_id
 
         if n_sampling is not None:
             sampling_kwargs[SamplingSolverArgs.N_SAMPLING.value] = n_sampling
@@ -131,6 +145,7 @@ class Solvers:
     def _make_ucb_solver_kwargs(
         self,
         action_keys: Iterable[actionKey],
+        solver_id: solverKey = None,
         optimistic_value: float = None,
         step_size: float = None,
         confidence: float = None,
@@ -138,6 +153,7 @@ class Solvers:
         ucb_kwargs: Dict[str, Iterable[actionKey] | float] = (
             self._make_weight_solver_kwargs(
                 action_keys=action_keys,
+                solver_id=solver_id,
                 optimistic_value=optimistic_value,
                 step_size=step_size,
             )
@@ -151,10 +167,14 @@ class Solvers:
     def _make_weight_solver_kwargs(
         self,
         action_keys: Iterable[actionKey],
+        solver_id: solverKey = None,
         optimistic_value: float = None,
         step_size: float = None,
     ) -> Dict[str, Iterable[actionKey] | float]:
         ws_kwargs = dict(action_keys=action_keys)
+
+        if solver_id is not None:
+            ws_kwargs[WeightSolverArgs.SOLVER_ID.value] = solver_id
 
         if optimistic_value is not None:
             ws_kwargs[WeightSolverArgs.OPTIMISTIC_VALUE.value] = (

@@ -3,7 +3,7 @@ from typing import Callable, List, Tuple
 from numpy import ndarray
 from scipy.stats import gamma
 
-from BanditAgents import Solvers, WeightSolver, SimulationContext
+from BanditAgents import Solvers, WeightSolver, SimulationContext, solverKey
 
 
 def weight_solver_example() -> ndarray[float]:
@@ -47,10 +47,15 @@ def weight_solver_example() -> ndarray[float]:
         # the simulations will run for a 100 steps.
         # which means the solver will make a 100 choices
         # and action_a or b will be called a 100 times total
-        targets: ndarray[float] = simulation.run(
-            n_steps=100, solver=weight_solver, steps_by_ticks=1, as_dict=True
+        targets: Tuple[solverKey, ndarray[float]] = next(
+            simulation.run(
+                n_steps=100,
+                solvers=[weight_solver],
+                steps_by_ticks=1,
+                as_dict=True,
+            )
         )
 
         weight_example_logger.debug(targets)
 
-    return targets
+    return targets[1]

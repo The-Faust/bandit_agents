@@ -14,7 +14,7 @@ from numpy import (
     isnan,
 )
 from BanditAgents.src.solvers.base_solver import BaseSolver
-from BanditAgents.src.domain import actionKey
+from BanditAgents.src.domain import actionKey, solverKey
 from scipy.stats import gamma
 
 
@@ -31,6 +31,7 @@ class SamplingSolver(BaseSolver):
         action_keys: Iterable[actionKey],
         n_sampling: int = 1,
         max_sample_size: int = 1000,
+        solver_id: solverKey = None,
     ) -> None:
         """_summary_
 
@@ -42,10 +43,12 @@ class SamplingSolver(BaseSolver):
             _description_, by default 1
         max_sample_size : int, optional
             _description_, by default 1000
+        solver_id: solverKey, optional
+            _description_, by default None
         """
         self.logger: logging.Logger = logging.getLogger(__name__)
 
-        super().__init__(action_keys=action_keys)
+        super().__init__(action_keys=action_keys, solver_id=solver_id)
 
         self.action_counts = zeros(len(self.action_keys))
         self.weights = ones([3, len(self.action_keys)])
@@ -77,7 +80,7 @@ class SamplingSolver(BaseSolver):
                 int(self.action_counts[action_index]), action_index
             ] = target
 
-            if self.action_counts[action_index] < self.max_sample_size:
+            if self.action_counts[action_index] < self.max_sample_size - 1:
                 self.action_counts[action_index] += 1
             else:
                 self.action_counts[action_index] = 0

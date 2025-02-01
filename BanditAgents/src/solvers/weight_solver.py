@@ -3,7 +3,7 @@ from typing import Any, Dict, Generator, Iterable, Self
 
 from numpy import array, ndarray, random
 from BanditAgents.src.solvers.base_solver import BaseSolver
-from BanditAgents.src.domain import actionKey
+from BanditAgents.src.domain import actionKey, solverKey
 
 
 class WeightSolver(BaseSolver):
@@ -17,6 +17,7 @@ class WeightSolver(BaseSolver):
         action_keys: Iterable[actionKey],
         optimistic_value: float = 0.0,
         step_size: float = 1.0,
+        solver_id: solverKey = None,
     ) -> None:
         """_summary_
 
@@ -31,7 +32,7 @@ class WeightSolver(BaseSolver):
         """
         self.logger: logging.Logger = logging.getLogger(__name__)
 
-        super().__init__(action_keys=action_keys)
+        super().__init__(action_keys=action_keys, solver_id=solver_id)
 
         self.step_size = step_size
         self.optimistic_value = optimistic_value
