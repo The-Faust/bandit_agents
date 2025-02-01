@@ -4,6 +4,9 @@ from numpy import arange, array, dtype, empty, float64, int64, ndarray
 from scipy.stats import gamma
 from BanditAgents.src.domain import actionKey
 from BanditAgents.src.domain.context_action_args import MakeGammaActionArgs
+from BanditAgents.src.exceptions.context_exceptions.invalid_action_data_exception import (
+    InvalidActionDataException,
+)
 from BanditAgents.src.solvers.base_solver import BaseSolver
 
 
@@ -168,13 +171,17 @@ class SimulationContext:
         Returns
         -------
         Self | None
-            _description_
+            if is_return is True returns self otherwise return None
         """
         if callable(action_data):
+            self.logger.debug(f"action {action_key} is a custom function")
+
             action_func: Callable[[any], float] = action_data
 
-        elif isinstance(action_data, Tuple[float, float, float]):
-            assert len(action_data) < 3
+        elif (type(action_data) is tuple) and (len(action_data) == 3):
+            self.logger.debug(
+                f"action {action_key} will bemade based on following params {action_data}"
+            )
 
             action_func: Callable[[], float] = (
                 self.simulation_context_action_factory.make_gamma_action(
@@ -183,12 +190,21 @@ class SimulationContext:
             )
 
         elif isinstance(action_data, ndarray[float]):
+            self.logger.debug(
+                f"action {action_key} will be a gamma fitted on given data"
+            )
+
             factory: SimulationContextActionFactory = (
                 self.simulation_context_action_factory
             )
             action_func: Callable[[], float] = (
                 factory.make_gamma_action_from_data(action_data)
             )
+
+        else:
+            raise InvalidActionDataException(action_data)
+
+        self.logger.debug(action_func)
 
         self.action_dict[action_key] = action_func
 

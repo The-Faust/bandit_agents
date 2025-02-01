@@ -7,18 +7,9 @@ from BanditAgents.src.domain import actionKey, agentKey
 from BanditAgents.src.domain.hyperparameters import (
     BaseSolverHyperParameters,
     ContextHyperParameters,
-    EpsilonSolverHyperParameters,
     SamplingSolverHyperParameters,
-    UCBSolverHyperParameters,
-    WeightSolverHyperParameters,
 )
-from BanditAgents.src.solvers import (
-    BaseSolver,
-    EpsilonSolver,
-    SamplingSolver,
-    UCBSolver,
-    WeightSolver,
-)
+from BanditAgents.src.solvers import BaseSolver
 from BanditAgents.src.contexts.context import Context
 
 
@@ -28,12 +19,6 @@ class Agent(BaseAgent):
     solver: Type[(BaseSolver,)]
     contexts_dict: Dict[str, Callable[[any], Type[(Context,)]]] = {
         ContextHyperParameters.__name__: Context
-    }
-    solvers_dict: Dict[str, Callable[[any], Type[(BaseSolver,)]]] = {
-        EpsilonSolverHyperParameters.__name__: EpsilonSolver,
-        SamplingSolverHyperParameters.__name__: SamplingSolver,
-        UCBSolverHyperParameters.__name__: UCBSolver,
-        WeightSolverHyperParameters.__name__: WeightSolver,
     }
 
     def __init__(

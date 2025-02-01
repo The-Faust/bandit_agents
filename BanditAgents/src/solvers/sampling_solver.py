@@ -80,7 +80,7 @@ class SamplingSolver(BaseSolver):
                 int(self.action_counts[action_index]), action_index
             ] = target
 
-            if self.action_counts[action_index] < self.max_sample_size:
+            if self.action_counts[action_index] < self.max_sample_size - 1:
                 self.action_counts[action_index] += 1
             else:
                 self.action_counts[action_index] = 0

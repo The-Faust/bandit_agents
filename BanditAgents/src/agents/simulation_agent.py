@@ -1,3 +1,4 @@
+import logging
 from typing import Callable, Dict, Iterable, Tuple, Type
 
 from numpy import float64, int64, ndarray
@@ -7,13 +8,13 @@ from BanditAgents import BaseSolverHyperParameters, SimulationContext
 from BanditAgents.src.agents.base_agent import BaseAgent
 from BanditAgents.src.domain import actionKey, agentKey
 from BanditAgents.src.domain.hyperparameters import SimulationParameters
-from build.lib.BanditAgents.src.solvers.base_solver import BaseSolver
+from BanditAgents.src.solvers.base_solver import BaseSolver
 
 
 class SimulationAgent(BaseAgent):
     agent_id: agentKey
     context: SimulationContext
-    solvers: Tuple[Type[(BaseSolver,)], ...]
+    solvers: list[Type[(BaseSolver,)]]
 
     def __init__(
         self,
@@ -43,6 +44,8 @@ class SimulationAgent(BaseAgent):
         agent_id : agentKey, optional
             _description_, by default False
         """
+        self.logger: logging.Logger = logging.getLogger(__name__)
+
         super().__init__(agent_id=agent_id)
 
         self.context = SimulationContext(actions=actions)
@@ -51,7 +54,7 @@ class SimulationAgent(BaseAgent):
             action_key for action_key in self.context.action_dict.keys()
         )
 
-        self.solvers = tuple(
+        self.solvers = list(
             self._from_solver_hyperparameters_make_solver(
                 action_keys=action_keys,
                 solver_hyperparameters=solver_hyperparameters,
@@ -64,7 +67,7 @@ class SimulationAgent(BaseAgent):
     ) -> Iterable[
         Tuple[
             str,
-            Dict[str, any]
+            Dict[str, ndarray]
             | Tuple[
                 ndarray[int64], ndarray[int64], ndarray[str], ndarray[float64]
             ],
@@ -102,7 +105,9 @@ class SimulationAgent(BaseAgent):
                 ],
             ]
         ] = self.context.run(
-            solvers=self.solvers, as_dict=as_dict, **simulation_parameters
+            solvers=self.solvers,
+            as_dict=as_dict,
+            **simulation_parameters.__dict__
         )
 
         return simulation_run

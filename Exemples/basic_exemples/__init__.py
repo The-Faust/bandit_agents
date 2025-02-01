@@ -10,7 +10,7 @@ from Exemples.basic_exemples.ucb_solver_example import ucb_solver_example
 from Exemples.basic_exemples.weight_solver_example import weight_solver_example
 
 
-def run_basic_examples() -> DataFrame:
+def run_basic_exemples() -> DataFrame:
     ws_simulation_results = DataFrame(weight_solver_example())
     ws_simulation_results["simulation"] = "weighted"
     es_simulation_results = DataFrame(epsilon_solver_example())
@@ -32,4 +32,4 @@ def run_basic_examples() -> DataFrame:
     return simulation_results
 
 
-__all__ = ['run_basic_examples']
+__all__ = ['run_basic_exemples']
