@@ -1,7 +1,7 @@
 from typing import Iterable, Self
 
 from BanditAgents.src.domain import actionKey
-from BanditAgents.src.solvers.base_solver import BaseSolver
+from BanditAgents.src.solvers.solver import Solver
 
 
 class BaseSolverBuilder:
@@ -17,10 +17,10 @@ class BaseSolverBuilder:
 
         return self
 
-    def build(self) -> BaseSolver:
+    def build(self) -> Solver:
         if self.action_keys is None:
             self.with_default_action_keys()
 
-        base_solver = BaseSolver(self.action_keys)
+        base_solver = Solver(self.action_keys)
 
         return base_solver

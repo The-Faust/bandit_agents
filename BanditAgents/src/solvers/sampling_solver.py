@@ -13,12 +13,12 @@ from numpy import (
     nan,
     isnan,
 )
-from BanditAgents.src.solvers.base_solver import BaseSolver
+from BanditAgents.src.solvers.solver import Solver
 from BanditAgents.src.domain import actionKey, solverKey
 from scipy.stats import gamma
 
 
-class SamplingSolver(BaseSolver):
+class SamplingSolver(Solver):
     action_counts: ndarray[int64]
     weights: ndarray[float64]
     max_sample_reached: ndarray[int64]

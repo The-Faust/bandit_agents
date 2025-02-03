@@ -8,13 +8,13 @@ from BanditAgents import BaseSolverHyperParameters, SimulationContext
 from BanditAgents.src.agents.base_agent import BaseAgent
 from BanditAgents.src.domain import actionKey, agentKey
 from BanditAgents.src.domain.hyperparameters import SimulationParameters
-from BanditAgents.src.solvers.base_solver import BaseSolver
+from BanditAgents.src.solvers.solver import Solver
 
 
 class SimulationAgent(BaseAgent):
     agent_id: agentKey
     context: SimulationContext
-    solvers: list[Type[(BaseSolver,)]]
+    solvers: list[Type[(Solver,)]]
 
     def __init__(
         self,

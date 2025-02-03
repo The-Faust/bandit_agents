@@ -2,15 +2,16 @@ import logging
 from typing import Any, Callable, Dict, Iterable, List, Self, Tuple, Type
 from numpy import arange, array, dtype, empty, float64, int64, ndarray
 from scipy.stats import gamma
+from BanditAgents.src.contexts.context import Context
 from BanditAgents.src.domain import actionKey
 from BanditAgents.src.domain.context_action_args import MakeGammaActionArgs
 from BanditAgents.src.exceptions.context_exceptions.invalid_action_data_exception import (
     InvalidActionDataException,
 )
-from BanditAgents.src.solvers.base_solver import BaseSolver
+from BanditAgents.src.solvers.solver import Solver
 
 
-class SimulationContextActionFactory:
+class SimulationContextActionFactory(Context):
     def make_gamma_action_from_data(
         self, y: ndarray[float]
     ) -> Callable[[], float]:
@@ -256,7 +257,7 @@ class SimulationContext:
     def run(
         self,
         n_steps: int,
-        solvers: List[Type[(BaseSolver,)]],
+        solvers: List[Type[(Solver,)]],
         steps_by_ticks: int = 1,
         as_dict: bool = False,
     ) -> Iterable[
@@ -318,7 +319,7 @@ class SimulationContext:
         steps: ndarray[int64],
         targets: ndarray[float64],
         as_dict: bool,
-        solver: Type[(BaseSolver,)],
+        solver: Type[(Solver,)],
     ) -> Tuple[
         str,
         Dict[str, any]
@@ -402,7 +403,7 @@ class SimulationContext:
         action_keys: ndarray[str],
         targets: ndarray[float64],
         solver_targets: ndarray[float64],
-        solver: Type[(BaseSolver,)],
+        solver: Type[(Solver,)],
         last_training_index: int,
     ) -> None:
         """Run one step of the simulation
@@ -461,7 +462,7 @@ class SimulationContext:
         action_keys: ndarray[str],
         targets: ndarray[float64],
         solver_targets: ndarray[float64],
-        solver: Type[(BaseSolver,)],
+        solver: Type[(Solver,)],
         last_training_index: int,
     ) -> None:
         """Execute fitting part of a step

@@ -3,13 +3,13 @@ import unittest
 
 from numpy import array, float64, ndarray
 
-from BanditAgents import BaseSolver, actionKey
+from BanditAgents import Solver, actionKey
 
 
 class TestBaseSolver(unittest.TestCase):
     def setUp(self) -> None:
         self.mock_action_keys: List[actionKey] = ["action_a", "action_b"]
-        self.base_solver: BaseSolver = BaseSolver(self.mock_action_keys)
+        self.base_solver: Solver = Solver(self.mock_action_keys)
 
     def test_indexes_to_action_keys_succeed(self) -> None:
         expected_action_keys: Tuple[actionKey, ...] = tuple(
