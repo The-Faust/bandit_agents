@@ -29,7 +29,7 @@ class BaseAgent:
     }
 
     def __init__(self, agent_id: agentKey = False) -> None:
-        self.logger = logging.getLogger(__name__)
+        self.logger: logging.Logger = logging.getLogger(__name__)
 
         self.agent_id = agent_id if agent_id else uuid4()
 

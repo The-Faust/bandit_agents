@@ -1,9 +1,9 @@
 import logging
 from typing import Callable, Tuple
+from numpy import float64, int64, ndarray
 from scipy.stats import gamma
 
-from BanditAgents import Agent
-from BanditAgents.src.domain import actionKey
+from BanditAgents import Agent, actionKey, SyncContextHyperParameters
 
 
 def basic_agent_exemple(
@@ -20,9 +20,15 @@ def basic_agent_exemple(
         "---------------------------------------------------\n"
         "Initiating agent"
     )
+
     # Now we make the agent, the default context is of type Context,
     # the default solver is a SamplingSolver
-    agent = Agent(actions)
+    sync_context_hyperparameters = SyncContextHyperParameters(actions)
+    agent: Agent = Agent(sync_context_hyperparameters)
+
+    indexes: ndarray[int64]
+    targets: ndarray[float64]
+
     exemple_logger.debug(f"Agent initiated \n{agent.info()}")
 
     for i in range(n_steps):

@@ -1,7 +1,9 @@
 from inspect import signature
 from typing import Callable, Dict, Iterable, Tuple
 
-from BanditAgents.src.contexts.deployable_context import DeployableContext
+from BanditAgents.src.contexts.deployable.deployable_context import (
+    DeployableContext,
+)
 from BanditAgents.src.domain import actionKey
 
 

@@ -1,5 +1,7 @@
 from typing import Iterable
-from BanditAgents.src.contexts.deployable_context import DeployableContext
+from BanditAgents.src.contexts.deployable.deployable_context import (
+    DeployableContext,
+)
 from BanditAgents.src.domain import actionKey
 
 

@@ -1,6 +1,7 @@
 from dataclasses import dataclass
+from typing import Callable, Iterable, Tuple
 
-from BanditAgents.src.domain import solverKey
+from BanditAgents.src.domain import actionKey, solverKey
 
 
 @dataclass
@@ -31,8 +32,18 @@ class UCBSolverHyperParameters(WeightSolverHyperParameters):
 
 
 @dataclass
-class ContextHyperParameters:
+class DeployableContextHyperParameters:
     pass
+
+
+@dataclass
+class SyncContextHyperParameters(DeployableContextHyperParameters):
+    actions: Iterable[Tuple[actionKey, Callable[[any], float]]]
+
+
+@dataclass
+class EmptyContextHyperParameters(DeployableContextHyperParameters):
+    action_keys: Iterable[actionKey]
 
 
 @dataclass
@@ -47,6 +58,9 @@ __all__: list[str] = [
     "WeightSolverHyperParameters",
     "EpsilonSolverHyperParameters",
     "UCBSolverHyperParameters",
-    "ContextHyperParameters",
+    "SyncContextHyperParameters",
     "SimulationParameters",
+    "DeployableContextHyperParameters",
+    "SyncContextHyperParameters",
+    "EmptyContextHyperParameters",
 ]

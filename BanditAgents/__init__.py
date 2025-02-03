@@ -16,7 +16,10 @@ from BanditAgents.src.domain.hyperparameters import (
     SamplingSolverHyperParameters,
     WeightSolverHyperParameters,
     UCBSolverHyperParameters,
-    ContextHyperParameters,
+    SyncContextHyperParameters,
+    DeployableContextHyperParameters,
+    EmptyContextHyperParameters,
+    SimulationParameters,
 )
 
 __all__: list[str] = [
@@ -33,6 +36,9 @@ __all__: list[str] = [
     "SamplingSolverHyperParameters",
     "WeightSolverHyperParameters",
     "UCBSolverHyperParameters",
-    "ContextHyperParameters",
+    "SyncContextHyperParameters",
     "solverKey",
+    "DeployableContextHyperParameters",
+    "EmptyContextHyperParameters",
+    "SimulationParameters",
 ]
