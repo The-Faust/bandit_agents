@@ -21,7 +21,7 @@ def basic_agent_exemple(
         "Initiating agent"
     )
 
-    # Now we make the agent, the default context is of type Context,
+    # Now we make the agent, the default context is of type SyncContext,
     # the default solver is a SamplingSolver
     sync_context_hyperparameters = SyncContextHyperParameters(actions)
     agent: Agent = Agent(sync_context_hyperparameters)
@@ -34,6 +34,7 @@ def basic_agent_exemple(
     for i in range(n_steps):
         exemple_logger.debug(f"running step {i}")
         indexes, targets = agent.act()
+
         agent = agent.fit(x=indexes, y=targets)
 
         exemple_logger.debug(f"agent info is: {agent.info()}")
