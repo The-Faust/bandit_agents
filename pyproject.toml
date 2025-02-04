@@ -4,6 +4,9 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "bandit-agents"
+authors = [
+  {name = "Vincent Martel", email = "vincent.martel.11235@gmail.com"},
+]
 dynamic = ["version"]
 dependencies = [
   "numpy",
