@@ -16,7 +16,7 @@ setup(
     author_email="vincent.martel.11235@gmail.com",
     description="Library to solve k-armed bandit problems",
     packages=find_packages(),
-    long_description=read("BanditAgents/README.md"),
+    long_description=read("README.md"),
     install_requires=requirements,
     setuptools_git_versioning={"enabled": True},
     setup_requires=[
