@@ -11,7 +11,7 @@ setup(
     name="Bandit Agents",
     description="Library to solve k-armed bandit problems",
     packages=find_packages(),
-    long_description=read("./README.md"),
+    # long_description=read("./README.md"),
     setuptools_git_versioning={"enabled": True},
     setup_requires=[
         "flake8",
