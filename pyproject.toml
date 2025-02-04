@@ -3,9 +3,4 @@ requires = ["setuptools>=61", "wheel", "setuptools-git-versioning"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "Bandit Agents"
 dynamic = ["version"]
-dependencies = [
-  "numpy",
-  "scipy"
-]
