@@ -9,6 +9,6 @@ authors = [
 ]
 dynamic = ["version", "readme"]
 dependencies = [
-  "numpy",
-  "scipy"
+  "numpy==2.1.3",
+  "scipy==1.14.1"
 ]
