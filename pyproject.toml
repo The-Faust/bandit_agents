@@ -7,7 +7,7 @@ name = "bandit-agents"
 authors = [
   {name = "Vincent Martel", email = "vincent.martel.11235@gmail.com"},
 ]
-dynamic = ["version", "README.md"]
+dynamic = ["version", "readme"]
 dependencies = [
   "numpy==2.1.3",
   "scipy==1.14.1"
