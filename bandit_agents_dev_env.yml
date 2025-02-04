@@ -14,6 +14,7 @@ dependencies:
   - wheel
   - twine
   - setuptools-git
+  - setuptools-git-versioning
 platforms:
   - linux-64
   - win-64
