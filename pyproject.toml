@@ -49,7 +49,7 @@ classifiers = [
   "Development Status :: 3 - Alpha",
 
   # Indicate who your project is intended for
-  "Intended Audience :: Developers, ml engineers and data scientists",
+  "Intended Audience :: Developers",
   "Topic :: Reinforcement learning :: K-armed bandit problem",
 
   # Specify the Python versions you support here.
