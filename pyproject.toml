@@ -7,8 +7,55 @@ name = "bandit-agents"
 authors = [
   {name = "Vincent Martel", email = "vincent.martel.11235@gmail.com"},
 ]
+description = "Library to solve k-armed bandit problems"
 dynamic = ["version", "readme"]
 dependencies = [
   "numpy==2.1.3",
   "scipy==1.14.1"
+]
+keywords = [
+  "machine learning", 
+  "ml", 
+  "k-armed bandit", 
+  "multi armed bandit", 
+  "k-armed", 
+  "armed", 
+  "multi", 
+  "machine", 
+  "learning", 
+  "reinforcement", 
+  "reinforcement learning", 
+  "applied", 
+  "mathematics", 
+  "solver",
+  "agent",
+  "ressources",
+  "optimization",
+  "martel",
+  "allocation",
+  "allocate",
+  "artificial intelligence",
+  "ai",
+  "algorithm",
+  "problem solving",
+  "bandit",
+]
+
+classifiers = [
+  # How mature is this project? Common values are
+  #   3 - Alpha
+  #   4 - Beta
+  #   5 - Production/Stable
+  "Development Status :: 3 - Alpha",
+
+  # Indicate who your project is intended for
+  "Intended Audience :: Developers, ml engineers and data scientists",
+  "Topic :: Reinforcement learning :: K-armed bandit problem",
+
+  # Specify the Python versions you support here.
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
 ]
