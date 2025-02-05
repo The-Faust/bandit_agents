@@ -50,7 +50,6 @@ classifiers = [
 
   # Indicate who your project is intended for
   "Intended Audience :: Developers",
-  "Topic :: Reinforcement learning :: K-armed bandit problem",
 
   # Specify the Python versions you support here.
   "Programming Language :: Python :: 3",
