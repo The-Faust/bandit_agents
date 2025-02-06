@@ -39,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: pypi
-      url: https://pypi.org/p/bandit_agents  # Replace <package-name> with your PyPI project name
+      url: https://pypi.org/p/bandit-agents  # Replace <package-name> with your PyPI project name
     permissions:
       id-token: write  # IMPORTANT: mandatory for trusted publishing
     steps:
@@ -104,7 +104,7 @@ jobs:
 
     environment:
       name: testpypi
-      url: https://test.pypi.org/p/bandit_agents
+      url: https://test.pypi.org/p/bandit-agents
 
     permissions:
       id-token: write  # IMPORTANT: mandatory for trusted publishing
